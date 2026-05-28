@@ -97,6 +97,7 @@ app.post('/api/reservas', wrap(async (req, res) => {
   const telefono = (b.telefono || '').trim();
   const email = (b.email || '').trim() || null;
   const notas = (b.notas || '').trim() || null;
+  const decoracion = !!b.decoracion;
   const personas = parseInt(b.personas, 10) || 1;
   const { entrada, salida } = b;
 
@@ -117,7 +118,7 @@ app.post('/api/reservas', wrap(async (req, res) => {
   const total = cabana.precio_noche * noches;
   const reserva = await repo.createReserva({
     codigo: repo.genCodigo(), cabana_id: cabana.id, nombre, email, telefono,
-    entrada, salida, personas, noches, total, notas,
+    entrada, salida, personas, noches, total, notas, decoracion,
   });
 
   res.status(201).json({

@@ -110,6 +110,8 @@ function makePgBackend() {
           estado TEXT NOT NULL DEFAULT 'pendiente',
           created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         );`);
+      // Migración: columna de decoración personalizada
+      await q(`ALTER TABLE reservas ADD COLUMN IF NOT EXISTS decoracion BOOLEAN NOT NULL DEFAULT FALSE`);
       await q(`
         CREATE TABLE IF NOT EXISTS bloqueos (
           id SERIAL PRIMARY KEY,
@@ -196,10 +198,10 @@ function makePgBackend() {
 
     async createReserva(d) {
       const { rows } = await q(
-        `INSERT INTO reservas (codigo, cabana_id, nombre, email, telefono, entrada, salida, personas, noches, total, notas, estado)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,'pendiente') RETURNING *`,
+        `INSERT INTO reservas (codigo, cabana_id, nombre, email, telefono, entrada, salida, personas, noches, total, notas, decoracion, estado)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,'pendiente') RETURNING *`,
         [d.codigo, d.cabana_id, d.nombre, d.email, d.telefono, d.entrada, d.salida,
-         d.personas, d.noches, d.total, d.notas]
+         d.personas, d.noches, d.total, d.notas, !!d.decoracion]
       );
       return rows[0];
     },

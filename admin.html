@@ -108,6 +108,7 @@
     .b-confirmada { background: #d8ecd9; color: #2a6b32; }
     .b-cancelada { background: #f3dcd7; color: #b03a2e; }
     .b-completada { background: #dde3ef; color: #36507f; }
+    .b-deco { background: #fbe6dd; color: #b85c38; margin-top: 4px; text-transform: none; letter-spacing: 0; }
 
     .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
     .muted { color: var(--muted); } .nowrap { white-space: nowrap; }
@@ -427,7 +428,7 @@
       $('reservasBody').innerHTML = rows.map((r) => `
         <tr>
           <td class="codigo nowrap">${r.codigo}</td>
-          <td>${r.nombre}<br><span class="muted" style="font-size:.8rem;">${r.telefono}${r.email ? '<br>' + r.email : ''}</span>${r.notas ? `<br><span class="muted" style="font-size:.78rem;">📝 ${r.notas}</span>` : ''}</td>
+          <td>${r.nombre}<br><span class="muted" style="font-size:.8rem;">${r.telefono}${r.email ? '<br>' + r.email : ''}</span>${r.notas ? `<br><span class="muted" style="font-size:.78rem;">📝 ${r.notas}</span>` : ''}${r.decoracion ? `<br><span class="badge b-deco">🎀 Decoración · precio a negociar</span>` : ''}</td>
           <td>${r.cabana_nombre || '—'}</td>
           <td class="nowrap">${fmtFecha(r.entrada)} → ${fmtFecha(r.salida)}<br><span class="muted" style="font-size:.8rem;">${r.noches} noche(s)</span></td>
           <td>${r.personas}</td>

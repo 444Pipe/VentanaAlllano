@@ -64,6 +64,17 @@
     input:focus, textarea:focus, select:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(53,94,59,.1); }
     textarea { resize: vertical; min-height: 88px; }
 
+    /* Toggle decoración */
+    .deco-toggle { display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+      background: #fcfaf5; border: 1.5px solid var(--line); border-radius: 11px; padding: 14px 16px; transition: border-color .2s, background .2s; }
+    .deco-toggle:hover { border-color: var(--green-mid); }
+    .deco-toggle input { width: 19px; height: 19px; margin-top: 2px; flex-shrink: 0; accent-color: var(--terra); cursor: pointer; }
+    .deco-box { flex: 1; }
+    .deco-box b { display: block; font-family: 'Inter', sans-serif; font-size: .95rem; color: var(--green-dark); margin-bottom: 2px; }
+    .deco-box small { color: var(--muted); font-size: .84rem; }
+    .deco-box small em { color: var(--terra); font-style: normal; font-weight: 600; }
+    .deco-toggle:has(input:checked) { border-color: var(--terra); background: #fff6f1; }
+
     /* Date picker row */
     .daterow { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 16px; align-items: end; }
     .stepper-num { display: flex; align-items: center; gap: 10px; }
@@ -246,6 +257,15 @@
               <label for="notas">Notas o solicitudes especiales (opcional)</label>
               <textarea id="notas" placeholder="Ej: llegamos en la noche, celebramos aniversario..."></textarea>
             </div>
+            <div style="margin-top: 16px;">
+              <label class="deco-toggle">
+                <input type="checkbox" id="decoracion">
+                <span class="deco-box">
+                  <b>🎀 Decoración personalizada</b>
+                  <small>Globos, flores, mensajes y más para aniversarios, cumpleaños o propuestas. <em>Precio a negociar.</em></small>
+                </span>
+              </label>
+            </div>
             <div style="margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap;">
               <button class="btn btn-ghost" id="btnVolver2">← Volver</button>
               <button class="btn btn-primary" id="btnConfirmar">Enviar solicitud de reserva</button>
@@ -400,15 +420,22 @@
 
     function resumenHTML() {
       const c = state.cabana;
+      const deco = $('decoracion') && $('decoracion').checked;
       return `
         <div class="row"><span>Cabaña</span><b>${c.nombre}</b></div>
         <div class="row"><span>Entrada</span><span>${fmtFecha(state.entrada)}</span></div>
         <div class="row"><span>Salida</span><span>${fmtFecha(state.salida)}</span></div>
         <div class="row"><span>Noches</span><span>${state.noches}</span></div>
         <div class="row"><span>Huéspedes</span><span>${state.personas}</span></div>
+        ${deco ? `<div class="row"><span>🎀 Decoración personalizada</span><span style="color:var(--terra);font-weight:600;">A negociar</span></div>` : ''}
         <div class="row"><span>${fmt(c.precio_noche)} × ${state.noches}</span><span>${fmt(c.precio_noche * state.noches)}</span></div>
-        <div class="row total"><span>Total</span><span>${fmt(c.precio_noche * state.noches)}</span></div>`;
+        <div class="row total"><span>Total hospedaje</span><span>${fmt(c.precio_noche * state.noches)}</span></div>
+        ${deco ? `<div class="row" style="padding-top:4px;"><span style="font-size:.8rem;color:var(--muted);">+ decoración a coordinar por WhatsApp</span></div>` : ''}`;
     }
+
+    document.addEventListener('change', (e) => {
+      if (e.target && e.target.id === 'decoracion') $('resumen').innerHTML = resumenHTML();
+    });
 
     // ----- Paso 3: confirmar -----
     $('btnConfirmar').addEventListener('click', async () => {
@@ -421,6 +448,7 @@
       const payload = {
         cabana_id: state.cabana.id, nombre, telefono,
         email: $('email').value.trim(), notas: $('notas').value.trim(),
+        decoracion: $('decoracion').checked,
         entrada: state.entrada, salida: state.salida, personas: state.personas,
       };
       const btn = $('btnConfirmar');
@@ -440,9 +468,11 @@
       const c = state.cabana;
       $('codigoBox').textContent = codigo;
       $('resumenFinal').innerHTML = resumenHTML();
+      const deco = $('decoracion').checked;
       const msg = `Hola, quiero confirmar mi reserva *${codigo}* en *${c.nombre}*.%0A` +
         `Entrada: ${state.entrada} · Salida: ${state.salida} · ${state.noches} noche(s) · ${state.personas} huésped(es).%0A` +
-        `A nombre de ${$('nombre').value.trim()}.`;
+        `A nombre de ${$('nombre').value.trim()}.` +
+        (deco ? `%0A🎀 Quiero *decoración personalizada* (precio a negociar).` : '');
       $('waBtn').href = `https://wa.me/${WHATSAPP}?text=${msg}`;
       goto(4);
       window.scrollTo({ top: 0, behavior: 'smooth' });

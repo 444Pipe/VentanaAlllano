@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservar · Ecocabañas Ventana al Llano</title>
+  <meta name="description" content="Reserva tu hospedaje en Ecocabañas Ventana al Llano, Restrepo, Meta." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="statics/logo.png.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green-dark: #1f3a2b; --green-mid: #355e3b; --green-light: #6b8e4e;
+      --cream: #f4efe6; --sand: #d9c9a8; --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b;
+    }
+    body { font-family: 'Inter', sans-serif; color: var(--ink); background: var(--cream); line-height: 1.6; }
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+    /* Top bar */
+    .topbar { background: var(--green-dark); color: white; padding: 16px 0; }
+    .topbar .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
+    .brand img { height: 42px; width: auto; background: rgba(255,255,255,.92); border-radius: 7px; padding: 4px 7px; }
+    .brand small { display: block; font-size: .68rem; letter-spacing: 2.5px; text-transform: uppercase; opacity: .8; }
+    .brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; }
+    .back-link { color: var(--sand); text-decoration: none; font-size: .9rem; font-weight: 500; }
+    .back-link:hover { color: white; }
+
+    /* Hero strip */
+    .head { background: var(--green-mid); color: white; padding: 46px 0; text-align: center; }
+    .head h1 { font-size: clamp(2rem, 4vw, 3rem); }
+    .head h1 em { font-style: italic; color: var(--sand); }
+    .head p { opacity: .9; margin-top: 8px; }
+
+    .wrap { padding: 40px 0 80px; }
+
+    /* Stepper */
+    .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 34px; flex-wrap: wrap; }
+    .step { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .85rem; font-weight: 600; }
+    .step .num { width: 26px; height: 26px; border-radius: 50%; background: #e3dccd; color: var(--muted);
+      display: flex; align-items: center; justify-content: center; font-size: .82rem; }
+    .step.active { color: var(--green-dark); }
+    .step.active .num { background: var(--green-mid); color: white; }
+    .step.done .num { background: var(--terra); color: white; }
+    .step-sep { width: 26px; height: 2px; background: #e3dccd; align-self: center; }
+
+    .card { background: white; border-radius: 12px; box-shadow: 0 20px 50px -28px rgba(0,0,0,.25); padding: 30px; }
+    .card + .card { margin-top: 24px; }
+
+    label { display: block; font-size: .82rem; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #e0d9c9; border-radius: 9px;
+      font-family: inherit; font-size: .95rem; background: #fcfaf5; color: var(--ink); transition: border-color .2s;
+    }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--green-mid); }
+    textarea { resize: vertical; min-height: 84px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 28px; border-radius: 50px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 600; font-size: .95rem; transition: all .25s;
+    }
+    .btn-primary { background: var(--terra); color: white; }
+    .btn-primary:hover { background: #a04e2c; }
+    .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid #d8cfbb; }
+    .btn-ghost:hover { background: #f0ead7; border-color: var(--green-mid); }
+    .btn-wa { background: #25D366; color: white; }
+    .btn-wa:hover { background: #1da851; }
+    .btn-block { width: 100%; }
+
+    .section-title { font-size: 1.5rem; color: var(--green-dark); margin-bottom: 4px; }
+    .section-sub { color: var(--muted); font-size: .92rem; margin-bottom: 22px; }
+
+    /* Cabaña cards */
+    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .cab {
+      border: 2px solid #ece5d6; border-radius: 12px; overflow: hidden; cursor: pointer;
+      transition: border-color .2s, transform .2s, box-shadow .2s; background: #fff;
+    }
+    .cab:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(0,0,0,.3); }
+    .cab.selected { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(184,92,56,.15); }
+    .cab-img { aspect-ratio: 4/3; background: #ddd; }
+    .cab-img img { width: 100%; height: 100%; object-fit: cover; }
+    .cab-body { padding: 16px 18px; }
+    .cab-body h3 { font-size: 1.35rem; color: var(--green-dark); }
+    .cab-body .cap { font-size: .82rem; color: var(--muted); margin: 2px 0 10px; }
+    .cab-price { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+    .cab-price .pn { color: var(--muted); font-size: .82rem; }
+    .cab-price .tot { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--terra); font-weight: 600; }
+
+    .summary { background: #f7f3ea; border-radius: 10px; padding: 18px 20px; }
+    .summary .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: .92rem; }
+    .summary .row.total { border-top: 1.5px solid #e3dccd; margin-top: 8px; padding-top: 12px; font-weight: 700; font-size: 1.05rem; color: var(--green-dark); }
+
+    .alert { padding: 12px 16px; border-radius: 9px; font-size: .9rem; margin-bottom: 18px; }
+    .alert-error { background: #fdecea; color: #b03a2e; border: 1px solid #f5c6c0; }
+    .alert-info { background: #eef4ee; color: var(--green-dark); border: 1px solid #cfe0cf; }
+
+    .hidden { display: none !important; }
+    .muted { color: var(--muted); }
+    .center { text-align: center; }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.4);
+      border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success */
+    .success-icon { width: 70px; height: 70px; margin: 0 auto 16px; border-radius: 50%; background: var(--green-mid);
+      color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .code-box { display: inline-block; background: var(--green-dark); color: var(--sand); font-weight: 700;
+      letter-spacing: 2px; padding: 10px 22px; border-radius: 8px; font-size: 1.2rem; margin: 12px 0; }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <img src="statics/logo.png.png" alt="Ventana al Llano">
+        <span><b>Ventana al Llano</b><small>Reservas · Restrepo, Meta</small></span>
+      </a>
+      <a href="index.html" class="back-link">← Volver al inicio</a>
+    </div>
+  </div>
+
+  <div class="head">
+    <div class="container">
+      <h1>Reserva tu <em>hospedaje</em></h1>
+      <p>Elige tus fechas, escoge tu cabaña y envía tu solicitud. Te confirmamos por WhatsApp.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="container">
+      <!-- Stepper -->
+      <div class="steps">
+        <div class="step active" id="stp1"><span class="num">1</span> Fechas</div>
+        <div class="step-sep"></div>
+        <div class="step" id="stp2"><span class="num">2</span> Cabaña</div>
+        <div class="step-sep"></div>
+        <div class="step" id="stp3"><span class="num">3</span> Tus datos</div>
+        <div class="step-sep"></div>
+        <div class="step" id="stp4"><span class="num">4</span> Listo</div>
+      </div>
+
+      <div id="alertBox"></div>
+
+      <!-- PASO 1: Fechas -->
+      <section class="card" id="paso1">
+        <h2 class="section-title">¿Cuándo nos visitas?</h2>
+        <p class="section-sub">Selecciona las fechas y el número de huéspedes.</p>
+        <div class="grid-3">
+          <div>
+            <label for="entrada">Fecha de entrada</label>
+            <input type="date" id="entrada">
+          </div>
+          <div>
+            <label for="salida">Fecha de salida</label>
+            <input type="date" id="salida">
+          </div>
+          <div>
+            <label for="personas">Huéspedes</label>
+            <input type="number" id="personas" min="1" max="12" value="2">
+          </div>
+        </div>
+        <div style="margin-top: 22px;">
+          <button class="btn btn-primary" id="btnBuscar">Buscar disponibilidad</button>
+        </div>
+      </section>
+
+      <!-- PASO 2: Cabañas -->
+      <section class="card hidden" id="paso2">
+        <h2 class="section-title">Cabañas disponibles</h2>
+        <p class="section-sub" id="paso2sub"></p>
+        <div class="cab-grid" id="cabGrid"></div>
+        <div style="margin-top: 22px;">
+          <button class="btn btn-ghost" id="btnVolver1">← Cambiar fechas</button>
+        </div>
+      </section>
+
+      <!-- PASO 3: Datos -->
+      <section class="card hidden" id="paso3">
+        <h2 class="section-title">Completa tu reserva</h2>
+        <p class="section-sub">Tus datos para confirmar la solicitud.</p>
+        <div class="grid-2">
+          <div>
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" placeholder="Ej: Ana Martínez">
+          </div>
+          <div>
+            <label for="telefono">Teléfono / WhatsApp *</label>
+            <input type="tel" id="telefono" placeholder="Ej: 311 382 2023">
+          </div>
+        </div>
+        <div style="margin-top: 16px;">
+          <label for="email">Correo electrónico (opcional)</label>
+          <input type="email" id="email" placeholder="tucorreo@ejemplo.com">
+        </div>
+        <div style="margin-top: 16px;">
+          <label for="notas">Notas o solicitudes especiales (opcional)</label>
+          <textarea id="notas" placeholder="Ej: llegamos en la noche, celebramos aniversario..."></textarea>
+        </div>
+
+        <div class="summary" style="margin-top: 22px;" id="resumen"></div>
+
+        <div style="margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-ghost" id="btnVolver2">← Volver</button>
+          <button class="btn btn-primary" id="btnConfirmar">Enviar solicitud de reserva</button>
+        </div>
+      </section>
+
+      <!-- PASO 4: Éxito -->
+      <section class="card hidden center" id="paso4">
+        <div class="success-icon">✓</div>
+        <h2 class="section-title">¡Solicitud enviada!</h2>
+        <p class="muted">Tu reserva quedó registrada como <b>pendiente</b>. Para confirmarla y coordinar el abono, escríbenos por WhatsApp con tu código.</p>
+        <div class="code-box" id="codigoBox"></div>
+        <div class="summary center" id="resumenFinal" style="text-align:left; max-width:420px; margin:18px auto 0;"></div>
+        <div class="actions">
+          <a class="btn btn-wa" id="waBtn" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
+          <a class="btn btn-ghost" href="reservar.html">Hacer otra reserva</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP = '573113822023';
+    const fmt = (n) => '$' + Number(n).toLocaleString('es-CO');
+    const fmtFecha = (s) => new Date(s + 'T00:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+    const $ = (id) => document.getElementById(id);
+
+    const state = { entrada: null, salida: null, personas: 2, noches: 0, cabana: null };
+
+    // Mínimos de fecha = hoy
+    const hoy = new Date().toISOString().slice(0, 10);
+    $('entrada').min = hoy;
+    $('salida').min = hoy;
+    $('entrada').addEventListener('change', () => {
+      const next = new Date($('entrada').value + 'T00:00:00');
+      next.setDate(next.getDate() + 1);
+      $('salida').min = next.toISOString().slice(0, 10);
+      if ($('salida').value && $('salida').value <= $('entrada').value) $('salida').value = next.toISOString().slice(0, 10);
+    });
+
+    function showAlert(msg, type = 'error') {
+      $('alertBox').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function clearAlert() { $('alertBox').innerHTML = ''; }
+
+    function setStep(n) {
+      [1, 2, 3, 4].forEach((i) => {
+        const el = $('stp' + i);
+        el.classList.toggle('active', i === n);
+        el.classList.toggle('done', i < n);
+      });
+    }
+    function goto(paso) {
+      ['paso1', 'paso2', 'paso3', 'paso4'].forEach((p) => $(p).classList.add('hidden'));
+      $('paso' + paso).classList.remove('hidden');
+      setStep(paso);
+    }
+
+    // ----- Paso 1: buscar disponibilidad -----
+    $('btnBuscar').addEventListener('click', async () => {
+      clearAlert();
+      const entrada = $('entrada').value, salida = $('salida').value;
+      const personas = parseInt($('personas').value, 10) || 1;
+      if (!entrada || !salida) return showAlert('Por favor selecciona las fechas de entrada y salida.');
+      if (salida <= entrada) return showAlert('La fecha de salida debe ser posterior a la de entrada.');
+
+      const btn = $('btnBuscar');
+      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Buscando...';
+      try {
+        const r = await fetch(`/api/disponibilidad?entrada=${entrada}&salida=${salida}&personas=${personas}`);
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'Error al consultar disponibilidad');
+        Object.assign(state, { entrada, salida, personas, noches: data.noches });
+        renderCabanas(data.cabanas);
+        goto(2);
+      } catch (e) {
+        showAlert(e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Buscar disponibilidad';
+      }
+    });
+
+    function renderCabanas(cabanas) {
+      $('paso2sub').textContent =
+        `${fmtFecha(state.entrada)} → ${fmtFecha(state.salida)} · ${state.noches} noche(s) · ${state.personas} huésped(es)`;
+      if (!cabanas.length) {
+        $('cabGrid').innerHTML = `<div class="alert alert-info" style="grid-column:1/-1">
+          No hay cabañas disponibles para esas fechas y cantidad de huéspedes. Prueba con otras fechas o escríbenos por WhatsApp.</div>`;
+        return;
+      }
+      const preselect = new URLSearchParams(location.search).get('cabana');
+      $('cabGrid').innerHTML = cabanas.map((c) => `
+        <div class="cab" data-id="${c.id}">
+          <div class="cab-img"><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
+          <div class="cab-body">
+            <h3>${c.nombre}</h3>
+            <div class="cap">Hasta ${c.capacidad} personas</div>
+            <div class="cab-price">
+              <span class="pn">${fmt(c.precio_noche)} / noche</span>
+              <span class="tot">${fmt(c.total)}</span>
+            </div>
+            <div class="pn" style="text-align:right; color:var(--muted); font-size:.78rem;">total ${state.noches} noche(s)</div>
+            <button class="btn btn-primary btn-block" style="margin-top:14px;">Seleccionar</button>
+          </div>
+        </div>`).join('');
+
+      document.querySelectorAll('.cab').forEach((el) => {
+        el.addEventListener('click', () => {
+          const id = Number(el.dataset.id);
+          const c = cabanas.find((x) => x.id === id);
+          selectCabana(c);
+        });
+      });
+
+      if (preselect) {
+        const match = cabanas.find((c) => c.slug === preselect);
+        if (match) selectCabana(match);
+      }
+    }
+
+    function selectCabana(c) {
+      state.cabana = c;
+      $('resumen').innerHTML = resumenHTML();
+      goto(3);
+    }
+
+    function resumenHTML() {
+      const c = state.cabana;
+      return `
+        <div class="row"><span>Cabaña</span><b>${c.nombre}</b></div>
+        <div class="row"><span>Entrada</span><span>${fmtFecha(state.entrada)}</span></div>
+        <div class="row"><span>Salida</span><span>${fmtFecha(state.salida)}</span></div>
+        <div class="row"><span>Noches</span><span>${state.noches}</span></div>
+        <div class="row"><span>Huéspedes</span><span>${state.personas}</span></div>
+        <div class="row"><span>${fmt(c.precio_noche)} × ${state.noches}</span><span>${fmt(c.precio_noche * state.noches)}</span></div>
+        <div class="row total"><span>Total</span><span>${fmt(c.precio_noche * state.noches)}</span></div>`;
+    }
+
+    $('btnVolver1').addEventListener('click', () => { clearAlert(); goto(1); });
+    $('btnVolver2').addEventListener('click', () => { clearAlert(); goto(2); });
+
+    // ----- Paso 3: confirmar -----
+    $('btnConfirmar').addEventListener('click', async () => {
+      clearAlert();
+      const nombre = $('nombre').value.trim();
+      const telefono = $('telefono').value.trim();
+      if (!nombre) return showAlert('Por favor escribe tu nombre.');
+      if (!telefono) return showAlert('Por favor escribe tu teléfono o WhatsApp.');
+
+      const payload = {
+        cabana_id: state.cabana.id, nombre, telefono,
+        email: $('email').value.trim(), notas: $('notas').value.trim(),
+        entrada: state.entrada, salida: state.salida, personas: state.personas,
+      };
+      const btn = $('btnConfirmar');
+      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Enviando...';
+      try {
+        const r = await fetch('/api/reservas', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'No se pudo crear la reserva');
+        mostrarExito(data.codigo);
+      } catch (e) {
+        showAlert(e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Enviar solicitud de reserva';
+      }
+    });
+
+    function mostrarExito(codigo) {
+      const c = state.cabana;
+      $('codigoBox').textContent = codigo;
+      $('resumenFinal').innerHTML = resumenHTML();
+      const msg = `Hola, quiero confirmar mi reserva *${codigo}* en *${c.nombre}*.%0A` +
+        `Entrada: ${state.entrada} · Salida: ${state.salida} · ${state.noches} noche(s) · ${state.personas} huésped(es).%0A` +
+        `A nombre de ${$('nombre').value.trim()}.`;
+      $('waBtn').href = `https://wa.me/${WHATSAPP}?text=${msg}`;
+      goto(4);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

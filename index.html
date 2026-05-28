@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecocabañas Ventana al Llano — Eco-hotel en Restrepo, Meta</title>
+  <meta name="description" content="Eco-hotel en Restrepo, Meta. Servicio de pasadía, hospedaje y restaurante. Cabañas tipo glamping rodeadas de naturaleza, piscina infinita y vistas únicas al llano." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="statics/logo.png.png">
+  <script>
+    // Al recargar, siempre empezar arriba (limpia el #ancla de la URL)
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) {
+      history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+    window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
+  </script>
+  <link rel="preload" as="image" href="statics/piscina-infinita/SaveClip.App_499039082_17977269467850600_1554016418580416870_n.jpg" fetchpriority="high">
+  <link rel="preload" as="video" href="statics/ventanaherofondo-web.mp4" type="video/mp4" fetchpriority="high">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green-dark: #1f3a2b;
+      --green-mid: #355e3b;
+      --green-light: #6b8e4e;
+      --cream: #f4efe6;
+      --sand: #d9c9a8;
+      --terra: #b85c38;
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; letter-spacing: -0.5px; }
+
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+
+    /* ---------- NAV ---------- */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 18px 0; transition: all 0.4s ease;
+      background: transparent;
+    }
+    .nav.scrolled {
+      background: rgba(244, 239, 230, 0.97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      padding: 12px 0;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 12px;
+      color: white; text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav.scrolled .logo { color: var(--green-dark); }
+    .logo-icon {
+      height: 54px; width: auto;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.92);
+      border-radius: 8px; padding: 5px 9px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    }
+    .nav.scrolled .logo-icon {
+      background: transparent; box-shadow: none; padding: 0;
+    }
+    .logo-icon img { height: 100%; width: auto; object-fit: contain; display: block; }
+    .logo-tag {
+      font-family: 'Inter', sans-serif; font-size: 0.7rem;
+      letter-spacing: 3px; text-transform: uppercase; font-weight: 500;
+      opacity: 0.9; padding-left: 4px;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.35);
+    }
+    .nav.scrolled .logo-tag { text-shadow: none; opacity: 0.7; }
+
+    .nav-links { display: flex; gap: 34px; list-style: none; align-items: center; }
+    .nav-links a {
+      color: white; text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      transition: color 0.3s; position: relative; letter-spacing: 0.3px;
+    }
+    .nav.scrolled .nav-links a { color: var(--green-dark); }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
+      height: 1.5px; background: currentColor; transform: scaleX(0); transform-origin: left;
+      transition: transform 0.3s;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta {
+      background: var(--terra); color: white !important; padding: 10px 22px;
+      border-radius: 50px; font-weight: 600 !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .nav-cta:hover { background: #a04e2c; }
+
+    .menu-toggle { display: none; background: none; border: none; color: white; cursor: pointer; }
+    .nav.scrolled .menu-toggle { color: var(--green-dark); }
+
+    /* ---------- HERO ---------- */
+    .hero {
+      position: relative; height: 100vh; min-height: 640px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
+      color: white; text-align: center;
+      background-color: var(--green-dark);
+      background-image: url('statics/piscina-infinita/SaveClip.App_499039082_17977269467850600_1554016418580416870_n.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 1;
+      opacity: 0; transition: opacity 1.2s ease;
+    }
+    .hero-video.ready { opacity: 1; }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 50%, rgba(31,58,43,0.55) 100%);
+    }
+    .hero-content { position: relative; z-index: 3; max-width: 900px; padding: 0 24px; }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.8rem; letter-spacing: 6px; text-transform: uppercase;
+      margin-bottom: 20px; opacity: 0.95;
+      padding: 8px 18px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50px;
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      margin-bottom: 22px;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+    .hero h1 em { font-style: italic; color: var(--sand); font-weight: 500; }
+    .hero p {
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      max-width: 620px; margin: 0 auto 38px;
+      opacity: 0.95; font-weight: 300;
+    }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 16px 32px; border-radius: 50px; text-decoration: none;
+      font-weight: 600; font-size: 0.95rem; transition: all 0.3s ease;
+      cursor: pointer; border: none; font-family: inherit;
+    }
+    .btn-primary { background: var(--terra); color: white; }
+    .btn-primary:hover { background: #a04e2c; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(184,92,56,0.4); }
+    .btn-ghost { background: rgba(255,255,255,0.1); color: white; border: 1.5px solid rgba(255,255,255,0.5); backdrop-filter: blur(10px); }
+    .btn-ghost:hover { background: white; color: var(--green-dark); }
+
+    .hero-scroll {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 3;
+      color: white; font-size: 0.75rem; letter-spacing: 3px; text-transform: uppercase;
+      opacity: 0.85; animation: bounce 2.5s infinite;
+    }
+    .hero-scroll::after { content: ''; display: block; width: 1px; height: 36px; background: white; margin: 12px auto 0; }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+    /* ---------- SECTIONS ---------- */
+    section { padding: 110px 0; }
+
+    .section-header { text-align: center; max-width: 720px; margin: 0 auto 70px; }
+    .section-eyebrow {
+      display: inline-block; font-size: 0.75rem; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--green-mid); font-weight: 600;
+      margin-bottom: 18px;
+    }
+    .section-eyebrow::before { content: '— '; }
+    .section-eyebrow::after { content: ' —'; }
+    .section-header h2 { font-size: clamp(2.2rem, 4vw, 3.5rem); margin-bottom: 18px; color: var(--green-dark); }
+    .section-header p { color: var(--muted); font-size: 1.05rem; }
+
+    /* ---------- ABOUT ---------- */
+    .about { background: var(--cream); }
+    .about-grid {
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 70px; align-items: center;
+    }
+    .about-text h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); color: var(--green-dark); margin-bottom: 24px; }
+    .about-text h2 em { font-style: italic; color: var(--terra); font-weight: 500; }
+    .about-text p { color: var(--muted); margin-bottom: 18px; font-size: 1.05rem; }
+    .about-features {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 36px;
+    }
+    .about-feature {
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .about-feature-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: var(--green-mid); color: white; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .about-feature h4 { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 4px; color: var(--green-dark); }
+    .about-feature p { font-size: 0.88rem; margin: 0; color: var(--muted); }
+
+    .about-image {
+      position: relative; border-radius: 4px; overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.3);
+      aspect-ratio: 4/5;
+    }
+    .about-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+    .about-image:hover img { transform: scale(1.05); }
+    .about-badge {
+      position: absolute; bottom: -30px; right: -30px;
+      width: 160px; height: 160px; background: var(--terra); color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; text-align: center; padding: 16px;
+      box-shadow: 0 15px 30px rgba(184,92,56,0.3);
+    }
+    .about-badge strong { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; line-height: 1; display: block; }
+    .about-badge span { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; opacity: 0.9; }
+
+    /* ---------- CABAÑAS ---------- */
+    .cabanas { background: linear-gradient(180deg, var(--cream) 0%, #ebe3d2 100%); }
+    .cabana {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+      margin-bottom: 110px;
+    }
+    .cabana:last-child { margin-bottom: 0; }
+    .cabana.reverse { direction: rtl; }
+    .cabana.reverse > * { direction: ltr; }
+
+    .cabana-gallery {
+      position: relative; aspect-ratio: 4/3;
+      display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr;
+      gap: 10px;
+    }
+    .cabana-gallery img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 4px;
+      transition: transform 0.6s ease;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+    .cabana-gallery .main-img { grid-row: 1/3; }
+    .cabana-gallery img:hover { transform: scale(1.02); }
+
+    .cabana-info .cabana-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 4.5rem; line-height: 1;
+      color: var(--sand); margin-bottom: 10px;
+    }
+    .cabana-info h3 { font-size: clamp(2rem, 3.5vw, 2.8rem); color: var(--green-dark); margin-bottom: 14px; }
+    .cabana-info h3 em { font-style: italic; color: var(--terra); font-weight: 500; }
+    .cabana-info p { color: var(--muted); margin-bottom: 24px; font-size: 1.02rem; }
+    .cabana-amenities {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px;
+    }
+    .cabana-amenities span {
+      background: white; padding: 8px 16px; border-radius: 50px;
+      font-size: 0.82rem; color: var(--green-dark); font-weight: 500;
+      border: 1px solid rgba(53,94,59,0.15);
+    }
+
+    /* ---------- POOL ---------- */
+    .pool {
+      background: var(--green-dark); color: white;
+      position: relative; overflow: hidden;
+    }
+    .pool::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: url('statics/piscina-infinita/SaveClip.App_503445001_17977269494850600_1021897473506415542_n.jpg');
+      background-size: cover; background-position: center;
+      opacity: 0.18; filter: blur(2px);
+    }
+    .pool .container { position: relative; z-index: 1; }
+    .pool .section-eyebrow { color: var(--sand); }
+    .pool .section-header h2 { color: white; }
+    .pool .section-header h2 em { color: var(--sand); font-style: italic; font-weight: 500; }
+    .pool .section-header p { color: rgba(255,255,255,0.85); }
+
+    .pool-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 280px 280px;
+      gap: 16px; margin-top: 50px;
+    }
+    .pool-grid > div { overflow: hidden; border-radius: 4px; }
+    .pool-grid img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .pool-grid > div:hover img { transform: scale(1.08); }
+    .pool-grid > div:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
+    .pool-grid > div:nth-child(2) { grid-column: 3; grid-row: 1; }
+    .pool-grid > div:nth-child(3) { grid-column: 3; grid-row: 2; }
+
+    /* ---------- AREAS SOCIALES ---------- */
+    .areas { background: var(--cream); }
+    .areas-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .areas-card {
+      position: relative; aspect-ratio: 3/4; overflow: hidden;
+      border-radius: 4px; cursor: pointer;
+    }
+    .areas-card img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .areas-card:hover img { transform: scale(1.08); }
+    .areas-card::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.75) 100%);
+    }
+    .areas-card-info {
+      position: absolute; bottom: 28px; left: 28px; right: 28px;
+      z-index: 1; color: white;
+    }
+    .areas-card-info h4 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.7rem;
+      margin-bottom: 6px; font-weight: 600;
+    }
+    .areas-card-info p { font-size: 0.88rem; opacity: 0.9; }
+
+    /* ---------- TARIFAS ---------- */
+    .tarifas { background: linear-gradient(180deg, #ebe3d2 0%, var(--cream) 100%); }
+    .tarifas-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 1000px; margin: 0 auto;
+    }
+    .tarifa-card {
+      background: white; padding: 50px 40px; border-radius: 6px;
+      box-shadow: 0 20px 50px -25px rgba(0,0,0,0.2);
+      text-align: center;
+      position: relative;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .tarifa-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px -25px rgba(0,0,0,0.3); }
+    .tarifa-card.featured { background: var(--green-dark); color: white; }
+    .tarifa-card.featured::before {
+      content: 'POPULAR'; position: absolute; top: 20px; right: 20px;
+      background: var(--terra); color: white; padding: 6px 14px;
+      font-size: 0.7rem; letter-spacing: 2px; border-radius: 50px;
+    }
+
+    .tarifa-card h3 {
+      font-size: 1.9rem; margin-bottom: 8px;
+      color: var(--green-dark);
+    }
+    .tarifa-card.featured h3 { color: white; }
+    .tarifa-card .price-label { font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .tarifa-card.featured .price-label { color: var(--sand); }
+    .tarifa-card .price {
+      font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; line-height: 1;
+      color: var(--terra); margin: 14px 0;
+    }
+    .tarifa-card.featured .price { color: var(--sand); }
+    .tarifa-card .price small { font-size: 1rem; vertical-align: top; }
+    .tarifa-card ul {
+      list-style: none; text-align: left; margin: 28px 0;
+    }
+    .tarifa-card li {
+      padding: 10px 0; font-size: 0.94rem;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .tarifa-card.featured li { border-bottom-color: rgba(255,255,255,0.1); }
+    .tarifa-card li::before { content: '✓'; color: var(--green-mid); font-weight: 700; margin-right: 10px; }
+    .tarifa-card.featured li::before { color: var(--sand); }
+
+    .resto-banner {
+      display: flex; align-items: center; gap: 26px;
+      max-width: 1000px; margin: 40px auto 0;
+      background: var(--green-mid); color: white;
+      padding: 30px 40px; border-radius: 6px;
+      box-shadow: 0 20px 50px -25px rgba(31,58,43,0.6);
+    }
+    .resto-banner-icon {
+      width: 64px; height: 64px; flex-shrink: 0;
+      background: rgba(255,255,255,0.12); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .resto-banner-text { flex: 1; }
+    .resto-banner-text h4 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem;
+      margin-bottom: 4px; font-weight: 600;
+    }
+    .resto-banner-text p { font-size: 0.95rem; color: rgba(255,255,255,0.9); margin: 0; }
+    .resto-banner-text strong { color: var(--sand); }
+    .resto-banner .btn { flex-shrink: 0; }
+
+    @media (max-width: 968px) {
+      .resto-banner { flex-direction: column; text-align: center; padding: 30px 24px; }
+      .resto-banner .btn { width: 100%; justify-content: center; }
+    }
+
+    /* ---------- GALLERY ---------- */
+    .gallery { background: var(--ink); padding: 110px 0; }
+    .gallery .section-header h2 { color: white; }
+    .gallery .section-header h2 em { color: var(--sand); font-style: italic; font-weight: 500; }
+    .gallery .section-header p { color: rgba(255,255,255,0.7); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 220px;
+      gap: 10px;
+    }
+    .gallery-grid > div { overflow: hidden; border-radius: 2px; cursor: pointer; position: relative; }
+    .gallery-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease, filter 0.4s; filter: grayscale(15%); }
+    .gallery-grid > div:hover img { transform: scale(1.08); filter: grayscale(0%); }
+    .gallery-grid > div.big { grid-column: span 2; grid-row: span 2; }
+
+    /* ---------- CONTACTO ---------- */
+    .contacto { background: var(--green-dark); color: white; padding: 110px 0 80px; }
+    .contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .contacto h2 { font-size: clamp(2.2rem, 4vw, 3.4rem); margin-bottom: 22px; color: white; }
+    .contacto h2 em { font-style: italic; color: var(--sand); font-weight: 500; }
+    .contacto > .container > .contacto-grid > div:first-child > p { color: rgba(255,255,255,0.85); margin-bottom: 36px; font-size: 1.05rem; }
+    .contacto-info { display: flex; flex-direction: column; gap: 22px; }
+    .contacto-item { display: flex; gap: 18px; align-items: flex-start; }
+    .contacto-icon {
+      width: 48px; height: 48px; flex-shrink: 0;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .contacto-item h4 { font-family: 'Inter', sans-serif; font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--sand); margin-bottom: 6px; font-weight: 600; }
+    .contacto-item p, .contacto-item a { color: white; font-size: 1.02rem; text-decoration: none; }
+    .contacto-item a:hover { color: var(--sand); }
+
+    .map-card {
+      background: rgba(255,255,255,0.05); padding: 14px; border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .map-card iframe { width: 100%; height: 380px; border: 0; border-radius: 4px; display: block; }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background: #0f1f15; color: rgba(255,255,255,0.6); padding: 40px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+      font-size: 0.85rem;
+    }
+    .footer-inner a { color: var(--sand); text-decoration: none; }
+
+    /* ---------- ICONS (Lucide) ---------- */
+    [data-lucide] { display: inline-block; vertical-align: middle; }
+    .about-feature-icon svg { width: 22px; height: 22px; stroke-width: 1.8; }
+    .contacto-icon svg { width: 20px; height: 20px; stroke-width: 1.8; }
+    .resto-banner-icon svg { width: 30px; height: 30px; stroke-width: 1.8; }
+    .cabana-amenities span svg {
+      width: 15px; height: 15px; stroke-width: 2;
+      vertical-align: -2px; margin-right: 7px; color: var(--green-mid);
+    }
+    .btn svg.btn-ico { width: 18px; height: 18px; stroke-width: 2; }
+
+    /* ---------- WHATSAPP FLOATING ---------- */
+    .wa-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 90;
+      width: 60px; height: 60px; background: #25D366; color: white;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 10px 30px rgba(37,211,102,0.4); text-decoration: none;
+      transition: transform 0.3s;
+      animation: pulse 2s infinite;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+    .wa-float svg { width: 32px; height: 32px; }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.5); }
+      50% { box-shadow: 0 10px 30px rgba(37,211,102,0.4), 0 0 0 18px rgba(37,211,102,0); }
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 968px) {
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); flex-direction: column; padding: 24px; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+      .nav-links.open { display: flex; }
+      .nav-links a { color: var(--green-dark) !important; }
+      .menu-toggle { display: block; }
+      section { padding: 80px 0; }
+      .about-grid, .cabana, .contacto-grid { grid-template-columns: 1fr !important; gap: 40px; }
+      .cabana.reverse { direction: ltr; }
+      .about-features { grid-template-columns: 1fr; }
+      .pool-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .pool-grid > div:nth-child(1) { grid-column: 1/3; grid-row: auto; height: 280px; }
+      .pool-grid > div { height: 200px; }
+      .pool-grid > div:nth-child(2), .pool-grid > div:nth-child(3) { grid-column: auto; grid-row: auto; }
+      .areas-grid, .tarifas-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid > div.big { grid-column: span 2; grid-row: span 2; }
+      .about-badge { width: 130px; height: 130px; bottom: -20px; right: -10px; }
+      .about-badge strong { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon"><img src="statics/logo.png.png" alt="Ventana al Llano · Ecocabañas Restrepo"></div>
+        <span class="logo-tag">Restrepo · Meta</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#cabanas">Cabañas</a></li>
+        <li><a href="#piscina">Piscina</a></li>
+        <li><a href="#tarifas">Tarifas</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="reservar.html" class="nav-cta">Reservar</a></li>
+      </ul>
+      <button class="menu-toggle" id="menuToggle" aria-label="Menú">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <video class="hero-video" id="heroVideo" autoplay muted playsinline preload="auto" fetchpriority="high" poster="statics/piscina-infinita/SaveClip.App_499039082_17977269467850600_1554016418580416870_n.jpg">
+      <source src="statics/ventanaherofondo-web.mp4#t=16" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Restrepo · Meta · Colombia</span>
+      <h1>Donde el llano se asoma<br><em>a la naturaleza</em></h1>
+      <p>Eco-hotel rodeado de montañas, glamping y cabañas únicas. Pasadía, hospedaje y restaurante con vistas que se quedan contigo.</p>
+      <div class="hero-actions">
+        <a href="reservar.html" class="btn btn-primary">Reservar ahora →</a>
+        <a href="#cabanas" class="btn btn-ghost">Ver cabañas</a>
+      </div>
+    </div>
+    <div class="hero-scroll">Descubre</div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section class="about" id="nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <span class="section-eyebrow">Sobre nosotros</span>
+          <h2>Un lugar de <em>ensueño</em> en el corazón del Meta</h2>
+          <p>Somos Ecocabañas Ventana al Llano, un eco-hotel ubicado en Restrepo donde la naturaleza, el descanso y el buen comer se unen para regalarte una experiencia inolvidable.</p>
+          <p>Sal de la rutina, respira aire puro y disfruta de cabañas tipo glamping, piscina infinita con vista panorámica y un restaurante para los paladares más exigentes.</p>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="about-feature-icon"><i data-lucide="leaf"></i></div>
+              <div><h4>Eco-hotel</h4><p>En armonía con la naturaleza</p></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-icon"><i data-lucide="waves"></i></div>
+              <div><h4>Piscina infinita</h4><p>Con vista panorámica al llano</p></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-icon"><i data-lucide="utensils"></i></div>
+              <div><h4>Restaurante</h4><p>Sabores típicos llaneros</p></div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-icon"><i data-lucide="sunrise"></i></div>
+              <div><h4>Pasadía y hospedaje</h4><p>Tú eliges cómo vivir la experiencia</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="about-image reveal">
+          <img src="statics/piscina-infinita/SaveClip.App_502589153_17977269449850600_4443264619970459978_n.jpg" alt="Vista de Ventana al Llano">
+          <div class="about-badge">
+            <strong>15K+</strong>
+            <span>Huéspedes felices</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CABAÑAS -->
+  <section class="cabanas" id="cabanas">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Nuestras cabañas</span>
+        <h2>Refugios diseñados para <em>desconectarte</em></h2>
+        <p>Tres experiencias únicas, una sola promesa: descanso real en medio del llano colombiano.</p>
+      </div>
+
+      <!-- Cabaña 1 - El Chiguiro -->
+      <div class="cabana reveal">
+        <div class="cabana-gallery">
+          <img class="main-img" src="statics/cabana-chiguiro/SaveClip.App_649228377_18009669110835757_978800948885697982_n.jpg" alt="Cabaña El Chigüiro">
+          <img src="statics/cabana-chiguiro/SaveClip.App_650623257_18074100920631934_4467133859214566639_n.jpg" alt="Cabaña El Chigüiro detalle">
+          <img src="statics/cabana-chiguiro/SaveClip.App_652858204_18129370705550139_3983451949691266276_n.jpg" alt="Cabaña El Chigüiro interior">
+        </div>
+        <div class="cabana-info">
+          <div class="cabana-num">01</div>
+          <h3>Cabaña <em>El Chigüiro</em></h3>
+          <p>Espaciosa y acogedora, ideal para familias o grupos que buscan comodidad sin renunciar a la conexión con la naturaleza. Acabados en madera y vistas que invitan a quedarse.</p>
+          <div class="cabana-amenities">
+            <span><i data-lucide="bed-double"></i>Hasta 6 personas</span>
+            <span><i data-lucide="trees"></i>Vista al jardín</span>
+            <span><i data-lucide="shower-head"></i>Baño privado</span>
+            <span><i data-lucide="wifi"></i>WiFi</span>
+            <span><i data-lucide="thermometer-sun"></i>Clima cálido</span>
+          </div>
+          <a href="reservar.html?cabana=el-chiguiro" class="btn btn-primary">Reservar esta cabaña</a>
+        </div>
+      </div>
+
+      <!-- Cabaña 2 - El Mico Glamping -->
+      <div class="cabana reverse reveal">
+        <div class="cabana-gallery">
+          <img class="main-img" src="statics/cabana-mico-glamping/SaveClip.App_642556274_18096203750292440_2958544728974809294_n.jpg" alt="Glamping El Mico">
+          <img src="statics/cabana-mico-glamping/SaveClip.App_650899613_18044006543744422_5652850326515313812_n.jpg" alt="Glamping detalle">
+          <img src="statics/cabana-mico-glamping/SaveClip.App_652365753_18085417691003334_2482436460336958704_n.jpg" alt="Glamping interior">
+        </div>
+        <div class="cabana-info">
+          <div class="cabana-num">02</div>
+          <h3>Cabaña <em>El Mico</em> · Glamping</h3>
+          <p>Nuestro glamping insignia. Una experiencia íntima donde duermes rodeado de naturaleza con todas las comodidades de un hotel boutique. Perfecto para parejas y escapadas románticas.</p>
+          <div class="cabana-amenities">
+            <span><i data-lucide="heart"></i>Ideal para parejas</span>
+            <span><i data-lucide="sparkles"></i>Estilo glamping</span>
+            <span><i data-lucide="moon-star"></i>Cielo estrellado</span>
+            <span><i data-lucide="bath"></i>Jacuzzi opcional</span>
+            <span><i data-lucide="flower-2"></i>Decoración romántica</span>
+          </div>
+          <a href="reservar.html?cabana=el-mico" class="btn btn-primary">Reservar esta cabaña</a>
+        </div>
+      </div>
+
+      <!-- Cabaña 3 - El Perezoso -->
+      <div class="cabana reveal">
+        <div class="cabana-gallery">
+          <img class="main-img" src="statics/cabana-perezoso/SaveClip.App_650621249_18082119707588204_1388314393573503417_n.jpg" alt="Cabaña El Perezoso">
+          <img src="statics/cabana-perezoso/SaveClip.App_651633018_18082309697342566_8121614446505987802_n.jpg" alt="Cabaña El Perezoso detalle">
+          <img src="statics/cabana-perezoso/SaveClip.App_652102523_18099916067302371_5609036293280606756_n.jpg" alt="Cabaña El Perezoso interior">
+        </div>
+        <div class="cabana-info">
+          <div class="cabana-num">03</div>
+          <h3>Cabaña <em>El Perezoso</em></h3>
+          <p>Tranquilidad pura. Una cabaña pensada para descansar al ritmo que tu cuerpo necesita: hamacas, vistas al verde y silencio que se respira. Para quienes quieren parar el tiempo.</p>
+          <div class="cabana-amenities">
+            <span><i data-lucide="bed"></i>Hasta 4 personas</span>
+            <span><i data-lucide="trees"></i>Vista al bosque</span>
+            <span><i data-lucide="tree-pine"></i>Acabados rústicos</span>
+            <span><i data-lucide="coffee"></i>Cocineta</span>
+            <span><i data-lucide="mountain"></i>Ventanal panorámico</span>
+          </div>
+          <a href="reservar.html?cabana=el-perezoso" class="btn btn-primary">Reservar esta cabaña</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PISCINA -->
+  <section class="pool" id="piscina">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Piscina infinita</span>
+        <h2>Donde el agua se <em>funde</em> con el horizonte</h2>
+        <p>Nuestra piscina infinita es uno de los espacios más fotografiados del lugar. Y por una buena razón.</p>
+      </div>
+      <div class="pool-grid reveal">
+        <div><img src="statics/piscina-infinita/SaveClip.App_503445001_17977269494850600_1021897473506415542_n.jpg" alt="Piscina infinita"></div>
+        <div><img src="statics/piscina-infinita/SaveClip.App_499039082_17977269467850600_1554016418580416870_n.jpg" alt="Piscina infinita detalle"></div>
+        <div><img src="statics/piscina-infinita/SaveClip.App_503445002_17977269476850600_5816440687376213529_n.jpg" alt="Piscina infinita amanecer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AREAS SOCIALES -->
+  <section class="areas">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Áreas sociales</span>
+        <h2>Espacios pensados para <em>compartir</em></h2>
+        <p>Restaurante, zonas de descanso y rincones únicos para celebrar momentos en buena compañía.</p>
+      </div>
+      <div class="areas-grid">
+        <div class="areas-card reveal">
+          <img src="statics/areas-sociales/SaveClip.App_509192856_17977269458850600_6221137991795998086_n.jpg" alt="Áreas sociales 1">
+          <div class="areas-card-info"><h4>Restaurante</h4><p>Sabores del llano en cada plato</p></div>
+        </div>
+        <div class="areas-card reveal">
+          <img src="statics/areas-sociales/SaveClip.App_509774696_17977269515850600_6175258645969611539_n.jpg" alt="Áreas sociales 2">
+          <div class="areas-card-info"><h4>Zonas de descanso</h4><p>Para conversar sin afanes</p></div>
+        </div>
+        <div class="areas-card reveal">
+          <img src="statics/areas-sociales/SaveClip.App_509836396_17977269506850600_8937930148647226820_n.jpg" alt="Áreas sociales 3">
+          <div class="areas-card-info"><h4>Celebraciones</h4><p>Decoramos tu momento especial</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TARIFAS -->
+  <section class="tarifas" id="tarifas">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Tarifas</span>
+        <h2>Planes para <em>cada momento</em></h2>
+        <p>Elige cómo quieres vivir tu experiencia en Ventana al Llano.</p>
+      </div>
+      <div class="tarifas-grid">
+        <div class="tarifa-card reveal">
+          <div class="price-label">Pasadía · por persona</div>
+          <h3>Día de sol</h3>
+          <div class="price"><small>$</small>25.000</div>
+          <p style="color:var(--muted); font-size:0.9rem;">adulto · por persona</p>
+          <ul>
+            <li>Adulto $25.000 · Niños 5–10 años $15.000</li>
+            <li>Acceso a piscina infinita y zonas verdes</li>
+            <li>Áreas sociales y parqueadero incluido</li>
+            <li>L–V: 9:00 a.m. – 6:00 p.m. · Sáb–Dom: 9:00 a.m. – 7:00 p.m.</li>
+          </ul>
+          <a href="#contacto" class="btn btn-primary" style="width:100%; justify-content:center;">Reservar pasadía</a>
+        </div>
+        <div class="tarifa-card featured reveal">
+          <div class="price-label">Hospedaje</div>
+          <h3>Noche en cabaña</h3>
+          <div class="price"><small>desde $</small>300.000</div>
+          <p style="color:var(--sand); font-size:0.9rem;">por noche</p>
+          <ul>
+            <li>Cabaña privada a elegir</li>
+            <li>Desayuno típico llanero</li>
+            <li>Acceso total a piscina y zonas</li>
+            <li>Decoraciones especiales disponibles</li>
+            <li>Check-in: 3:00 p.m. / Check-out: 12:00 m.</li>
+          </ul>
+          <a href="reservar.html" class="btn btn-primary" style="width:100%; justify-content:center;">Reservar hospedaje</a>
+        </div>
+      </div>
+
+      <!-- RESTAURANTE -->
+      <div class="resto-banner reveal">
+        <div class="resto-banner-icon"><i data-lucide="utensils"></i></div>
+        <div class="resto-banner-text">
+          <h4>Servicio de restaurante</h4>
+          <p>Disfruta nuestros <strong>almuerzos típicos llaneros desde $30.000</strong>. Abierto de <strong>12:00 m. a 7:00 p.m.</strong> · <em>Los lunes no hay servicio de restaurante.</em></p>
+        </div>
+        <a href="https://wa.me/573113822023?text=Hola%2C%20quiero%20información%20sobre%20el%20restaurante" target="_blank" class="btn btn-primary">Ver más</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="galeria">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-eyebrow">Galería</span>
+        <h2>El llano en cada <em>detalle</em></h2>
+        <p>Una mirada al lugar que pronto querrás visitar.</p>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="big"><img src="statics/cabana-chiguiro/SaveClip.App_650969980_18093296381019477_2660021239446078146_n.jpg" alt="Cabaña Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_652526785_18098949289760832_9201503867486485467_n.jpg" alt="Glamping"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_652525191_18149381797476076_7094192785623621262_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_652760496_18074508683396632_6107894147082596648_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_654035105_18159387007427409_3338780275465560452_n.jpg" alt="Glamping"></div>
+        <div class="big"><img src="statics/cabana-mico-glamping/SaveClip.App_669610369_18522507280073226_5536193564999874573_n.jpg" alt="Glamping interior"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_654019205_18105795883853785_4320786210843869773_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_652765217_18106582447839170_6935977076577770237_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_654697589_18095429591007289_5993881658342603630_n.jpg" alt="Glamping"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_654021443_18114906877674015_7363854065253476626_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_653853809_18083586410613321_8112173762396990558_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_656273592_18178644238377341_8317951670087124664_n.jpg" alt="Glamping"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_654613323_18158241301445179_326088564721909358_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_654076598_18109107241773193_7136597881971621483_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_661951778_18335882059169481_715924497593716004_n.jpg" alt="Glamping"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_655563219_18116109910642882_2836422373328611522_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_669795230_18423620656193142_5982590416247023513_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-mico-glamping/SaveClip.App_670414466_18336239650172069_7806188656917147484_n.jpg" alt="Glamping"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_656719373_18095548940088444_3488248084415211244_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/cabana-chiguiro/SaveClip.App_669857478_18583133014034942_4584815489181269691_n.jpg" alt="Chigüiro"></div>
+        <div><img src="statics/cabana-perezoso/SaveClip.App_662736886_18575984464007703_521776546689185933_n.jpg" alt="Perezoso"></div>
+        <div><img src="statics/piscina-infinita/SaveClip.App_509815479_17977269491850600_8939160282818504221_n.jpg" alt="Piscina"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="container">
+      <div class="contacto-grid">
+        <div class="reveal">
+          <span class="section-eyebrow" style="color: var(--sand);">Contáctanos</span>
+          <h2>Sal de la rutina y <em>reserva</em></h2>
+          <p>Estamos listos para recibirte. Escríbenos por WhatsApp o llámanos para confirmar disponibilidad y reservar tu experiencia.</p>
+          <div class="contacto-info">
+            <div class="contacto-item">
+              <div class="contacto-icon"><i data-lucide="phone"></i></div>
+              <div>
+                <h4>Teléfono / WhatsApp</h4>
+                <a href="https://wa.me/573113822023" target="_blank">+57 311 382 2023</a>
+              </div>
+            </div>
+            <div class="contacto-item">
+              <div class="contacto-icon"><i data-lucide="map-pin"></i></div>
+              <div>
+                <h4>Ubicación</h4>
+                <p>Restrepo, Meta · Colombia</p>
+              </div>
+            </div>
+            <div class="contacto-item">
+              <div class="contacto-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.38C1.36 2.67.94 3.34.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.8.72 1.47 1.38 2.13.66.66 1.33 1.08 2.12 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.7 5.7 0 0 0 2.13-1.38 5.7 5.7 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.7 5.7 0 0 0-1.38-2.12A5.7 5.7 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32ZM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.41-10.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/></svg>
+              </div>
+              <div>
+                <h4>Instagram</h4>
+                <a href="https://instagram.com/ecocabanasventanallano" target="_blank">@ecocabanasventanallano</a>
+              </div>
+            </div>
+            <div class="contacto-item">
+              <div class="contacto-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+              </div>
+              <div>
+                <h4>TikTok</h4>
+                <a href="https://www.tiktok.com/@ventana.al.llano" target="_blank">@ventana.al.llano</a>
+              </div>
+            </div>
+            <div class="contacto-item">
+              <div class="contacto-icon"><i data-lucide="clock"></i></div>
+              <div>
+                <h4>Horarios</h4>
+                <p>Pasadía L–V: 9:00 a.m. – 6:00 p.m.<br>Pasadía Sáb–Dom: 9:00 a.m. – 7:00 p.m.<br>Restaurante: 12:00 m. – 7:00 p.m. (lunes cerrado)</p>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 36px;">
+            <a href="https://wa.me/573113822023?text=Hola%2C%20quiero%20reservar%20en%20Ventana%20al%20Llano" target="_blank" class="btn btn-primary">
+              <svg class="btn-ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.08-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.49 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42"/></svg> Reservar por WhatsApp
+            </a>
+          </div>
+        </div>
+        <div class="map-card reveal">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3978.985756954961!2d-73.59187639999999!3d4.2230381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3fd35f5e91339d%3A0xb774bbb06863ca04!2sEco%20caba%C3%B1as%20ventana%20al%20llano!5e0!3m2!1ses-419!2sco!4v1780003817511!5m2!1ses-419!2sco" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 Ecocabañas Ventana al Llano · Restrepo, Meta</div>
+      <div>Hecho con cariño para los amantes del llano · <a href="https://wa.me/573113822023">WhatsApp</a></div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Floating -->
+  <a href="https://wa.me/573113822023?text=Hola%2C%20quiero%20información%20sobre%20Ventana%20al%20Llano" target="_blank" class="wa-float" aria-label="WhatsApp">
+    <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.56 2.16 7.99L0 32l8.21-2.13C10.55 31.26 13.23 32 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm0 29.34c-2.5 0-4.92-.66-7.05-1.91l-.5-.3-5.07 1.31 1.35-4.94-.33-.51A13.3 13.3 0 012.66 16C2.66 8.63 8.63 2.66 16 2.66S29.34 8.63 29.34 16 23.37 29.34 16 29.34zm7.31-9.97c-.4-.2-2.38-1.17-2.75-1.31-.37-.13-.64-.2-.91.2-.27.4-1.04 1.31-1.28 1.58-.24.27-.47.3-.87.1-.4-.2-1.7-.62-3.23-2-1.19-1.06-2-2.38-2.23-2.78-.23-.4-.02-.61.18-.81.18-.18.4-.47.6-.7.2-.23.27-.4.4-.67.13-.27.07-.5-.03-.7-.1-.2-.91-2.18-1.24-2.99-.33-.78-.66-.67-.91-.69h-.78c-.27 0-.7.1-1.07.5-.37.4-1.41 1.38-1.41 3.36 0 1.98 1.45 3.9 1.65 4.17.2.27 2.85 4.35 6.91 6.1.97.42 1.72.67 2.31.86.97.31 1.85.27 2.55.16.78-.12 2.38-.97 2.72-1.91.33-.94.33-1.74.23-1.91-.1-.17-.37-.27-.77-.47z"/></svg>
+  </a>
+
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script>
+    if (window.lucide) lucide.createIcons();
+  </script>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Video hero: empieza en segundo 16, loop manual al mismo punto
+    const heroVideo = document.getElementById('heroVideo');
+    const HERO_START = 16;
+    if (heroVideo) {
+      const show = () => heroVideo.classList.add('ready');
+      const ensureStart = () => {
+        if (heroVideo.currentTime < HERO_START) {
+          try { heroVideo.currentTime = HERO_START; } catch (e) {}
+        }
+      };
+      heroVideo.addEventListener('loadedmetadata', ensureStart, { once: true });
+      heroVideo.addEventListener('ended', () => {
+        heroVideo.currentTime = HERO_START;
+        heroVideo.play();
+      });
+      if (heroVideo.readyState >= 3) show();
+      else heroVideo.addEventListener('canplay', show, { once: true });
+      heroVideo.play().catch(() => {
+        document.body.addEventListener('click', () => heroVideo.play(), { once: true });
+      });
+    }
+  </script>
+</body>
+</html>

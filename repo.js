@@ -48,6 +48,20 @@ function genCodigo() {
 function overlap(aIn, aOut, bIn, bOut) {
   return aIn < bOut && bIn < aOut; // rangos [entrada, salida)
 }
+function monthsWindow(back, fwd) {
+  const base = new Date();
+  const keys = [];
+  for (let i = -back; i <= fwd; i++) {
+    const d = new Date(base.getFullYear(), base.getMonth() + i, 1);
+    keys.push(`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`);
+  }
+  return keys;
+}
+const MES_CORTO = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+function etiquetaMes(key) {
+  const [y, m] = key.split('-');
+  return `${MES_CORTO[Number(m) - 1]} ${y.slice(2)}`;
+}
 
 /* ============================================================
  *  BACKEND POSTGRES
@@ -251,6 +265,37 @@ function makePgBackend() {
         FROM reservas`, [today]);
       return r.rows[0];
     },
+
+    async analytics() {
+      const keys = monthsWindow(1, 4);
+      const desde = keys[0] + '-01';
+      const mes = await q(`
+        SELECT to_char(date_trunc('month', entrada), 'YYYY-MM') AS mes,
+               COUNT(*)::int AS reservas,
+               COALESCE(SUM(total) FILTER (WHERE estado IN ('confirmada','completada')),0)::bigint AS ingresos
+          FROM reservas WHERE entrada >= $1
+          GROUP BY 1`, [desde]);
+      const mapMes = Object.fromEntries(mes.rows.map((r) => [r.mes, r]));
+      const porMes = keys.map((k) => ({
+        mes: k, etiqueta: etiquetaMes(k),
+        reservas: mapMes[k] ? mapMes[k].reservas : 0,
+        ingresos: mapMes[k] ? Number(mapMes[k].ingresos) : 0,
+      }));
+
+      const est = await q(`SELECT estado, COUNT(*)::int n FROM reservas GROUP BY estado`);
+      const porEstado = { pendiente: 0, confirmada: 0, cancelada: 0, completada: 0 };
+      est.rows.forEach((r) => { porEstado[r.estado] = r.n; });
+
+      const cab = await q(`
+        SELECT c.nombre,
+               COUNT(r.id)::int AS reservas,
+               COALESCE(SUM(r.total) FILTER (WHERE r.estado IN ('confirmada','completada')),0)::bigint AS ingresos
+          FROM cabanas c LEFT JOIN reservas r ON r.cabana_id = c.id
+          GROUP BY c.id, c.nombre ORDER BY c.id`);
+      const porCabana = cab.rows.map((r) => ({ nombre: r.nombre, reservas: r.reservas, ingresos: Number(r.ingresos) }));
+
+      return { porMes, porEstado, porCabana };
+    },
   };
 }
 
@@ -366,6 +411,30 @@ function makeMemoryBackend() {
           .reduce((s, r) => s + Number(r.total || 0), 0),
       };
     },
+    async analytics() {
+      const keys = monthsWindow(1, 4);
+      const porMes = keys.map((k) => {
+        const delMes = db.reservas.filter((r) => r.entrada.slice(0, 7) === k);
+        return {
+          mes: k, etiqueta: etiquetaMes(k),
+          reservas: delMes.length,
+          ingresos: delMes.filter((r) => ['confirmada', 'completada'].includes(r.estado))
+            .reduce((s, r) => s + Number(r.total || 0), 0),
+        };
+      });
+      const porEstado = { pendiente: 0, confirmada: 0, cancelada: 0, completada: 0 };
+      db.reservas.forEach((r) => { porEstado[r.estado] = (porEstado[r.estado] || 0) + 1; });
+      const porCabana = db.cabanas.map((c) => {
+        const rs = db.reservas.filter((r) => r.cabana_id === c.id);
+        return {
+          nombre: c.nombre,
+          reservas: rs.length,
+          ingresos: rs.filter((r) => ['confirmada', 'completada'].includes(r.estado))
+            .reduce((s, r) => s + Number(r.total || 0), 0),
+        };
+      });
+      return { porMes, porEstado, porCabana };
+    },
   };
 }
 
@@ -402,4 +471,5 @@ module.exports = {
   createBloqueo: (...a) => impl.createBloqueo(...a),
   deleteBloqueo: (...a) => impl.deleteBloqueo(...a),
   stats: (...a) => impl.stats(...a),
+  analytics: (...a) => impl.analytics(...a),
 };

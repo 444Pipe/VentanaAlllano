@@ -8,72 +8,87 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="statics/logo.png.png">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --green-dark: #1f3a2b; --green-mid: #355e3b; --cream: #f4efe6; --sand: #d9c9a8;
-      --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e6e0d3;
+      --green-dark: #1f3a2b; --green-mid: #355e3b; --green-light: #6b8e4e; --cream: #f4efe6;
+      --sand: #d9c9a8; --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e6e0d3; --bg: #f1ede4;
     }
-    body { font-family: 'Inter', sans-serif; color: var(--ink); background: #f1ede4; line-height: 1.5; }
+    body { font-family: 'Inter', sans-serif; color: var(--ink); background: var(--bg); line-height: 1.5; }
     h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
     a { color: inherit; }
     input, select, button, textarea { font-family: inherit; font-size: .92rem; }
 
-    /* Login */
+    /* ---------- LOGIN ---------- */
     .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
       background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); }
-    .login-card { background: white; border-radius: 14px; padding: 40px 34px; width: 100%; max-width: 380px;
+    .login-card { background: white; border-radius: 16px; padding: 42px 36px; width: 100%; max-width: 390px;
       box-shadow: 0 30px 70px -30px rgba(0,0,0,.5); text-align: center; }
-    .login-card img { height: 54px; margin: 0 auto 14px; }
-    .login-card h1 { font-size: 1.7rem; color: var(--green-dark); }
-    .login-card p { color: var(--muted); font-size: .88rem; margin-bottom: 22px; }
+    .login-card img { height: 56px; margin: 0 auto 14px; }
+    .login-card h1 { font-size: 1.8rem; color: var(--green-dark); }
+    .login-card p { color: var(--muted); font-size: .88rem; margin-bottom: 24px; }
+    .login-card .field-group { text-align: left; margin-bottom: 14px; }
 
-    label { display: block; text-align: left; font-size: .8rem; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
-    .field { width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 9px; background: #fcfaf5; }
-    .field:focus { outline: none; border-color: var(--green-mid); }
+    label { display: block; font-size: .78rem; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
+    .field { width: 100%; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 10px; background: #fcfaf5; }
+    .field:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(53,94,59,.1); }
 
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 11px 20px;
-      border-radius: 8px; border: none; cursor: pointer; font-weight: 600; transition: all .2s; }
+      border-radius: 9px; border: none; cursor: pointer; font-weight: 600; transition: all .2s; }
     .btn-primary { background: var(--terra); color: white; }
     .btn-primary:hover { background: #a04e2c; }
     .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
     .btn-block { width: 100%; }
-    .btn-sm { padding: 7px 12px; font-size: .82rem; border-radius: 7px; }
-    .btn-green { background: var(--green-mid); color: white; }
-    .btn-green:hover { background: #2a4b2f; }
-    .btn-soft { background: #efe9dc; color: var(--green-dark); }
-    .btn-soft:hover { background: #e4dcca; }
-    .btn-danger { background: #f3dcd7; color: #b03a2e; }
-    .btn-danger:hover { background: #ecc9c2; }
+    .btn-sm { padding: 7px 12px; font-size: .82rem; border-radius: 8px; }
+    .btn-green { background: var(--green-mid); color: white; } .btn-green:hover { background: #2a4b2f; }
+    .btn-soft { background: #efe9dc; color: var(--green-dark); } .btn-soft:hover { background: #e4dcca; }
+    .btn-danger { background: #f3dcd7; color: #b03a2e; } .btn-danger:hover { background: #ecc9c2; }
 
-    /* App shell */
+    /* ---------- SHELL ---------- */
     .app { display: none; min-height: 100vh; }
-    header.bar { background: var(--green-dark); color: white; padding: 14px 0; }
-    .bar-inner { max-width: 1240px; margin: 0 auto; padding: 0 22px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .bar-brand { display: flex; align-items: center; gap: 10px; }
-    .bar-brand img { height: 38px; background: rgba(255,255,255,.92); border-radius: 6px; padding: 3px 6px; }
-    .bar-brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; }
-    .bar-brand small { display: block; font-size: .66rem; letter-spacing: 2px; text-transform: uppercase; opacity: .8; }
-    .bar a.viewsite { color: var(--sand); text-decoration: none; font-size: .85rem; margin-right: 14px; }
+    .sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 244px; background: var(--green-dark); color: #e8e4da;
+      display: flex; flex-direction: column; z-index: 60; transition: transform .3s ease;
+    }
+    .sb-brand { display: flex; align-items: center; gap: 11px; padding: 20px 20px 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .sb-brand img { height: 40px; background: rgba(255,255,255,.92); border-radius: 7px; padding: 3px 6px; }
+    .sb-brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: white; }
+    .sb-brand small { display: block; font-size: .64rem; letter-spacing: 2px; text-transform: uppercase; opacity: .7; }
+    .sb-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; overflow-y: auto; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; cursor: pointer;
+      color: #cfd6cd; font-weight: 500; font-size: .92rem; transition: background .2s, color .2s; }
+    .nav-item:hover { background: rgba(255,255,255,.07); color: white; }
+    .nav-item.active { background: var(--terra); color: white; }
+    .nav-item svg { width: 19px; height: 19px; flex-shrink: 0; }
+    .sb-foot { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; gap: 8px; }
+    .sb-foot a, .sb-foot button { font-size: .85rem; }
+    .sb-foot a { color: var(--sand); text-decoration: none; padding: 4px 0; }
 
-    main { max-width: 1240px; margin: 0 auto; padding: 26px 22px 70px; }
+    .main { margin-left: 244px; min-height: 100vh; }
+    .mobile-bar { display: none; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 55; }
+
+    .content { max-width: 1180px; margin: 0 auto; padding: 26px 26px 70px; }
+    .page-title { color: var(--green-dark); font-size: 1.9rem; margin-bottom: 4px; }
+    .page-sub { color: var(--muted); font-size: .9rem; margin-bottom: 22px; }
 
     /* Stats */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 26px; }
-    @media (max-width: 820px) { .stats { grid-template-columns: 1fr 1fr; } }
-    .stat { background: white; border-radius: 12px; padding: 18px 20px; box-shadow: 0 14px 36px -26px rgba(0,0,0,.3); }
-    .stat .k { font-size: .76rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 600; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 22px; }
+    @media (max-width: 760px) { .stats { grid-template-columns: 1fr 1fr; } }
+    .stat { background: white; border-radius: 14px; padding: 18px 20px; box-shadow: 0 14px 36px -26px rgba(0,0,0,.3); }
+    .stat .k { font-size: .74rem; text-transform: uppercase; letter-spacing: 1.3px; color: var(--muted); font-weight: 600; }
     .stat .v { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; color: var(--green-dark); font-weight: 600; line-height: 1.1; margin-top: 4px; }
     .stat.terra .v { color: var(--terra); }
 
-    /* Tabs */
-    .tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
-    .tab { padding: 9px 18px; border-radius: 50px; background: white; border: 1.5px solid var(--line);
-      cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted); }
-    .tab.active { background: var(--green-mid); color: white; border-color: var(--green-mid); }
+    /* Charts */
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    @media (max-width: 860px) { .charts { grid-template-columns: 1fr; } }
+    .chart-card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 14px 36px -26px rgba(0,0,0,.3); }
+    .chart-card h3 { color: var(--green-dark); font-size: 1.25rem; margin-bottom: 14px; }
+    .chart-wrap { position: relative; height: 250px; }
 
     .panel { background: white; border-radius: 14px; padding: 22px; box-shadow: 0 16px 40px -28px rgba(0,0,0,.3); }
-    .panel h2 { color: var(--green-dark); font-size: 1.4rem; margin-bottom: 14px; }
 
     .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; align-items: flex-end; }
     .filters .fg { display: flex; flex-direction: column; }
@@ -93,18 +108,17 @@
     .b-completada { background: #dde3ef; color: #36507f; }
 
     .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-    .muted { color: var(--muted); }
-    .nowrap { white-space: nowrap; }
+    .muted { color: var(--muted); } .nowrap { white-space: nowrap; }
     .empty { text-align: center; color: var(--muted); padding: 34px; }
     .codigo { font-weight: 700; color: var(--green-dark); }
 
-    .alert { padding: 11px 15px; border-radius: 9px; font-size: .88rem; margin-bottom: 16px; }
+    .alert { padding: 11px 15px; border-radius: 10px; font-size: .88rem; margin-bottom: 16px; }
     .alert-error { background: #fdecea; color: #b03a2e; border: 1px solid #f5c6c0; }
     .alert-ok { background: #eef4ee; color: var(--green-dark); border: 1px solid #cfe0cf; }
 
     /* Calendario */
-    .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; min-width: 620px; }
     .cal-dow { text-align: center; font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; padding-bottom: 4px; }
     .cal-cell { min-height: 92px; border: 1px solid var(--line); border-radius: 8px; padding: 6px; background: #fcfaf5; }
     .cal-cell.empty-cell { background: transparent; border: none; }
@@ -119,6 +133,18 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .hidden { display: none !important; }
     .stack { display: grid; gap: 14px; }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .overlay.show { display: block; }
+      .mobile-bar { display: flex; align-items: center; gap: 12px; background: var(--green-dark); color: white; padding: 12px 16px; position: sticky; top: 0; z-index: 50; }
+      .mobile-bar img { height: 32px; background: rgba(255,255,255,.92); border-radius: 6px; padding: 2px 5px; }
+      .mobile-bar b { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
+      .hamb { background: none; border: none; color: white; cursor: pointer; padding: 4px; }
+    }
   </style>
 </head>
 <body>
@@ -130,125 +156,137 @@
       <p>Ecocabañas Ventana al Llano</p>
       <div id="loginAlert"></div>
       <form id="loginForm">
-        <label for="pwd">Contraseña</label>
-        <input type="password" id="pwd" class="field" autocomplete="current-password" required>
-        <button type="submit" class="btn btn-primary btn-block" id="loginBtn" style="margin-top:18px;">Ingresar</button>
+        <div class="field-group">
+          <label for="user">Usuario</label>
+          <input type="text" id="user" class="field" autocomplete="username" value="admin" required>
+        </div>
+        <div class="field-group">
+          <label for="pwd">Contraseña</label>
+          <input type="password" id="pwd" class="field" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="loginBtn" style="margin-top:8px;">Ingresar</button>
       </form>
     </div>
   </div>
 
   <!-- APP -->
   <div class="app" id="app">
-    <header class="bar">
-      <div class="bar-inner">
-        <div class="bar-brand">
-          <img src="statics/logo.png.png" alt="Logo">
-          <span><b>Ventana al Llano</b><small>Panel admin</small></span>
-        </div>
-        <div>
-          <a href="index.html" class="viewsite" target="_blank">Ver sitio ↗</a>
-          <button class="btn btn-sm btn-soft" id="logoutBtn">Cerrar sesión</button>
-        </div>
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-brand">
+        <img src="statics/logo.png.png" alt="Logo">
+        <span><b>Ventana al Llano</b><small>Panel admin</small></span>
       </div>
-    </header>
+      <nav class="sb-nav" id="sbNav">
+        <div class="nav-item active" data-tab="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg> Dashboard</div>
+        <div class="nav-item" data-tab="reservas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Reservas</div>
+        <div class="nav-item" data-tab="calendario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> Calendario</div>
+        <div class="nav-item" data-tab="bloqueos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Bloqueos</div>
+        <div class="nav-item" data-tab="cabanas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Cabañas</div>
+      </nav>
+      <div class="sb-foot">
+        <a href="index.html" target="_blank">Ver sitio ↗</a>
+        <button class="btn btn-sm btn-soft" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+    <div class="overlay" id="overlay"></div>
 
-    <main>
-      <div class="stats" id="stats"></div>
-
-      <div class="tabs">
-        <div class="tab active" data-tab="reservas">Reservas</div>
-        <div class="tab" data-tab="calendario">Calendario</div>
-        <div class="tab" data-tab="bloqueos">Bloqueos</div>
-        <div class="tab" data-tab="cabanas">Cabañas</div>
+    <div class="main">
+      <div class="mobile-bar">
+        <button class="hamb" id="hamb"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <img src="statics/logo.png.png" alt=""> <b>Panel admin</b>
       </div>
 
-      <div id="globalAlert"></div>
+      <div class="content">
+        <div id="globalAlert"></div>
 
-      <!-- RESERVAS -->
-      <section class="panel" id="tab-reservas">
-        <h2>Reservas</h2>
-        <div class="filters">
-          <div class="fg">
-            <label>Estado</label>
-            <select id="fEstado" class="field">
-              <option value="">Todos</option>
-              <option value="pendiente">Pendientes</option>
-              <option value="confirmada">Confirmadas</option>
-              <option value="completada">Completadas</option>
-              <option value="cancelada">Canceladas</option>
-            </select>
+        <!-- DASHBOARD -->
+        <section id="tab-dashboard">
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-sub">Resumen general de las reservas.</p>
+          <div class="stats" id="stats"></div>
+          <div class="charts">
+            <div class="chart-card"><h3>Reservas por mes</h3><div class="chart-wrap"><canvas id="chMes"></canvas></div></div>
+            <div class="chart-card"><h3>Ingresos por mes</h3><div class="chart-wrap"><canvas id="chIngresos"></canvas></div></div>
+            <div class="chart-card"><h3>Reservas por estado</h3><div class="chart-wrap"><canvas id="chEstado"></canvas></div></div>
+            <div class="chart-card"><h3>Reservas por cabaña</h3><div class="chart-wrap"><canvas id="chCabana"></canvas></div></div>
           </div>
-          <div class="fg">
-            <label>Desde</label>
-            <input type="date" id="fDesde" class="field">
-          </div>
-          <div class="fg">
-            <label>Hasta</label>
-            <input type="date" id="fHasta" class="field">
-          </div>
-          <div class="fg" style="flex:1; min-width:180px;">
-            <label>Buscar (nombre, código, teléfono)</label>
-            <input type="text" id="fQ" class="field" placeholder="Buscar...">
-          </div>
-          <button class="btn btn-green" id="btnFiltrar">Filtrar</button>
-          <button class="btn btn-soft" id="btnLimpiar">Limpiar</button>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Código</th><th>Cliente</th><th>Cabaña</th><th class="nowrap">Estadía</th>
-                <th>Huésp.</th><th>Total</th><th>Estado</th><th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="reservasBody"></tbody>
-          </table>
-        </div>
-        <div id="reservasEmpty" class="empty hidden">No hay reservas que coincidan.</div>
-      </section>
+        </section>
 
-      <!-- CALENDARIO -->
-      <section class="panel hidden" id="tab-calendario">
-        <div class="cal-head">
-          <h2 id="calTitulo" style="margin:0;">Calendario</h2>
-          <div>
-            <button class="btn btn-sm btn-soft" id="calPrev">← Mes anterior</button>
-            <button class="btn btn-sm btn-soft" id="calNext">Mes siguiente →</button>
+        <!-- RESERVAS -->
+        <section id="tab-reservas" class="hidden">
+          <h1 class="page-title">Reservas</h1>
+          <p class="page-sub">Gestiona, confirma y cancela las reservas.</p>
+          <div class="panel">
+            <div class="filters">
+              <div class="fg">
+                <label>Estado</label>
+                <select id="fEstado" class="field">
+                  <option value="">Todos</option>
+                  <option value="pendiente">Pendientes</option>
+                  <option value="confirmada">Confirmadas</option>
+                  <option value="completada">Completadas</option>
+                  <option value="cancelada">Canceladas</option>
+                </select>
+              </div>
+              <div class="fg"><label>Desde</label><input type="date" id="fDesde" class="field"></div>
+              <div class="fg"><label>Hasta</label><input type="date" id="fHasta" class="field"></div>
+              <div class="fg" style="flex:1; min-width:180px;"><label>Buscar (nombre, código, teléfono)</label><input type="text" id="fQ" class="field" placeholder="Buscar..."></div>
+              <button class="btn btn-green" id="btnFiltrar">Filtrar</button>
+              <button class="btn btn-soft" id="btnLimpiar">Limpiar</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>Código</th><th>Cliente</th><th>Cabaña</th><th class="nowrap">Estadía</th><th>Huésp.</th><th>Total</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody id="reservasBody"></tbody>
+              </table>
+            </div>
+            <div id="reservasEmpty" class="empty hidden">No hay reservas que coincidan.</div>
           </div>
-        </div>
-        <div class="cal-grid" id="calGrid"></div>
-      </section>
+        </section>
 
-      <!-- BLOQUEOS -->
-      <section class="panel hidden" id="tab-bloqueos">
-        <h2>Bloqueo de fechas</h2>
-        <p class="muted" style="margin-bottom:16px;">Marca días en los que una cabaña (o todas) no debe estar disponible para reservar.</p>
-        <div class="filters">
-          <div class="fg">
-            <label>Cabaña</label>
-            <select id="bCabana" class="field"><option value="">Todas las cabañas</option></select>
+        <!-- CALENDARIO -->
+        <section id="tab-calendario" class="hidden">
+          <h1 class="page-title">Calendario</h1>
+          <p class="page-sub">Ocupación del mes (reservas y bloqueos).</p>
+          <div class="panel">
+            <div class="cal-head">
+              <h2 id="calTitulo" style="margin:0; color:var(--green-dark);">Mes</h2>
+              <div>
+                <button class="btn btn-sm btn-soft" id="calPrev">← Anterior</button>
+                <button class="btn btn-sm btn-soft" id="calNext">Siguiente →</button>
+              </div>
+            </div>
+            <div class="tbl-wrap"><div class="cal-grid" id="calGrid"></div></div>
           </div>
-          <div class="fg"><label>Desde</label><input type="date" id="bDesde" class="field"></div>
-          <div class="fg"><label>Hasta</label><input type="date" id="bHasta" class="field"></div>
-          <div class="fg" style="flex:1; min-width:160px;"><label>Motivo (opcional)</label><input type="text" id="bMotivo" class="field" placeholder="Ej: mantenimiento"></div>
-          <button class="btn btn-green" id="btnBloquear">Agregar bloqueo</button>
-        </div>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Cabaña</th><th>Desde</th><th>Hasta</th><th>Motivo</th><th></th></tr></thead>
-            <tbody id="bloqueosBody"></tbody>
-          </table>
-        </div>
-        <div id="bloqueosEmpty" class="empty hidden">No hay bloqueos registrados.</div>
-      </section>
+        </section>
 
-      <!-- CABAÑAS -->
-      <section class="panel hidden" id="tab-cabanas">
-        <h2>Cabañas y precios</h2>
-        <p class="muted" style="margin-bottom:16px;">Edita el precio por noche, la capacidad y si la cabaña está disponible para reservar.</p>
-        <div class="stack" id="cabanasList"></div>
-      </section>
-    </main>
+        <!-- BLOQUEOS -->
+        <section id="tab-bloqueos" class="hidden">
+          <h1 class="page-title">Bloqueo de fechas</h1>
+          <p class="page-sub">Marca días en los que una cabaña (o todas) no debe estar disponible.</p>
+          <div class="panel">
+            <div class="filters">
+              <div class="fg"><label>Cabaña</label><select id="bCabana" class="field"><option value="">Todas las cabañas</option></select></div>
+              <div class="fg"><label>Desde</label><input type="date" id="bDesde" class="field"></div>
+              <div class="fg"><label>Hasta</label><input type="date" id="bHasta" class="field"></div>
+              <div class="fg" style="flex:1; min-width:160px;"><label>Motivo (opcional)</label><input type="text" id="bMotivo" class="field" placeholder="Ej: mantenimiento"></div>
+              <button class="btn btn-green" id="btnBloquear">Agregar</button>
+            </div>
+            <div class="tbl-wrap">
+              <table><thead><tr><th>Cabaña</th><th>Desde</th><th>Hasta</th><th>Motivo</th><th></th></tr></thead><tbody id="bloqueosBody"></tbody></table>
+            </div>
+            <div id="bloqueosEmpty" class="empty hidden">No hay bloqueos registrados.</div>
+          </div>
+        </section>
+
+        <!-- CABAÑAS -->
+        <section id="tab-cabanas" class="hidden">
+          <h1 class="page-title">Cabañas y precios</h1>
+          <p class="page-sub">Edita el precio por noche, la capacidad y la disponibilidad.</p>
+          <div class="stack" id="cabanasList"></div>
+        </section>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -256,6 +294,7 @@
     const fmt = (n) => '$' + Number(n || 0).toLocaleString('es-CO');
     const fmtFecha = (s) => s ? new Date(s + 'T00:00:00').toLocaleDateString('es-CO', { day: '2-digit', month: 'short' }) : '';
     let TOKEN = localStorage.getItem('vll_token') || '';
+    const charts = {};
 
     async function api(path, opts = {}) {
       const res = await fetch(path, {
@@ -267,7 +306,6 @@
       if (!res.ok) throw new Error(data.error || 'Error en el servidor');
       return data;
     }
-
     function alertMsg(box, msg, type = 'error') {
       $(box).innerHTML = `<div class="alert alert-${type === 'ok' ? 'ok' : 'error'}">${msg}</div>`;
       if (type === 'ok') setTimeout(() => { $(box).innerHTML = ''; }, 3500);
@@ -279,58 +317,96 @@
       const btn = $('loginBtn');
       btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Ingresando...';
       try {
-        const data = await fetch('/api/admin/login', {
+        const res = await fetch('/api/admin/login', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: $('pwd').value }),
-        }).then((r) => r.json().then((d) => ({ ok: r.ok, d })));
-        if (!data.ok) throw new Error(data.d.error || 'Contraseña incorrecta');
-        TOKEN = data.d.token;
-        localStorage.setItem('vll_token', TOKEN);
+          body: JSON.stringify({ username: $('user').value.trim(), password: $('pwd').value }),
+        });
+        const d = await res.json();
+        if (!res.ok) throw new Error(d.error || 'Credenciales incorrectas');
+        TOKEN = d.token; localStorage.setItem('vll_token', TOKEN);
         enterApp();
-      } catch (err) {
-        alertMsg('loginAlert', err.message);
-      } finally {
-        btn.disabled = false; btn.textContent = 'Ingresar';
-      }
+      } catch (err) { alertMsg('loginAlert', err.message); }
+      finally { btn.disabled = false; btn.textContent = 'Ingresar'; }
     });
 
     function logout() {
       TOKEN = ''; localStorage.removeItem('vll_token');
-      $('app').style.display = 'none';
-      $('loginScreen').style.display = 'flex';
+      $('app').style.display = 'none'; $('loginScreen').style.display = 'flex';
     }
     $('logoutBtn').addEventListener('click', logout);
 
     async function enterApp() {
       $('loginScreen').style.display = 'none';
       $('app').style.display = 'block';
-      await Promise.all([loadStats(), loadReservas(), loadCabanasSelect()]);
+      await Promise.all([loadDashboard(), loadCabanasSelect()]);
     }
 
-    // ---------- Tabs ----------
-    document.querySelectorAll('.tab').forEach((t) => {
+    // ---------- Sidebar / nav ----------
+    function closeSidebar() { $('sidebar').classList.remove('open'); $('overlay').classList.remove('show'); }
+    $('hamb').addEventListener('click', () => { $('sidebar').classList.add('open'); $('overlay').classList.add('show'); });
+    $('overlay').addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.nav-item').forEach((t) => {
       t.addEventListener('click', () => {
-        document.querySelectorAll('.tab').forEach((x) => x.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach((x) => x.classList.remove('active'));
         t.classList.add('active');
         const name = t.dataset.tab;
-        ['reservas', 'calendario', 'bloqueos', 'cabanas'].forEach((n) =>
+        ['dashboard', 'reservas', 'calendario', 'bloqueos', 'cabanas'].forEach((n) =>
           $('tab-' + n).classList.toggle('hidden', n !== name));
+        closeSidebar();
+        if (name === 'dashboard') loadDashboard();
+        if (name === 'reservas') loadReservas();
         if (name === 'calendario') renderCalendario();
         if (name === 'bloqueos') loadBloqueos();
         if (name === 'cabanas') loadCabanas();
       });
     });
 
-    // ---------- Stats ----------
-    async function loadStats() {
+    // ---------- Dashboard ----------
+    async function loadDashboard() {
       try {
-        const s = await api('/api/admin/stats');
+        const [s, a] = await Promise.all([api('/api/admin/stats'), api('/api/admin/analytics')]);
         $('stats').innerHTML = `
           <div class="stat terra"><div class="k">Pendientes</div><div class="v">${s.pendientes}</div></div>
           <div class="stat"><div class="k">Confirmadas</div><div class="v">${s.confirmadas}</div></div>
           <div class="stat"><div class="k">Próximas llegadas</div><div class="v">${s.proximas}</div></div>
           <div class="stat"><div class="k">Ingresos (conf.)</div><div class="v">${fmt(s.ingresos)}</div></div>`;
-      } catch (e) { /* noop */ }
+        renderCharts(a);
+      } catch (e) { alertMsg('globalAlert', e.message); }
+    }
+
+    function mkChart(id, config) {
+      if (charts[id]) charts[id].destroy();
+      charts[id] = new Chart($(id), config);
+    }
+    function renderCharts(a) {
+      const labels = a.porMes.map((m) => m.etiqueta);
+      const terra = '#b85c38', green = '#355e3b', sand = '#c9b483';
+      Chart.defaults.font.family = 'Inter, sans-serif';
+      Chart.defaults.color = '#6b6b6b';
+
+      mkChart('chMes', {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'Reservas', data: a.porMes.map((m) => m.reservas), backgroundColor: green, borderRadius: 6 }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+      });
+      mkChart('chIngresos', {
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Ingresos', data: a.porMes.map((m) => m.ingresos), borderColor: terra, backgroundColor: 'rgba(184,92,56,.12)', fill: true, tension: .35, pointBackgroundColor: terra }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => fmt(c.parsed.y) } } }, scales: { y: { beginAtZero: true, ticks: { callback: (v) => '$' + (v / 1000) + 'k' } } } },
+      });
+      mkChart('chEstado', {
+        type: 'doughnut',
+        data: { labels: ['Pendientes', 'Confirmadas', 'Completadas', 'Canceladas'],
+          datasets: [{ data: [a.porEstado.pendiente, a.porEstado.confirmada, a.porEstado.completada, a.porEstado.cancelada],
+            backgroundColor: ['#e0b54d', green, '#5b7aa8', terra], borderWidth: 2, borderColor: '#fff' }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, cutout: '62%' },
+      });
+      mkChart('chCabana', {
+        type: 'bar',
+        data: { labels: a.porCabana.map((c) => c.nombre.replace('Cabaña ', '')), datasets: [{ label: 'Reservas', data: a.porCabana.map((c) => c.reservas), backgroundColor: sand, borderRadius: 6 }] },
+        options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { precision: 0 } } } },
+      });
     }
 
     // ---------- Reservas ----------
@@ -340,12 +416,9 @@
       if ($('fDesde').value) p.set('desde', $('fDesde').value);
       if ($('fHasta').value) p.set('hasta', $('fHasta').value);
       if ($('fQ').value.trim()) p.set('q', $('fQ').value.trim());
-      try {
-        const rows = await api('/api/admin/reservas?' + p.toString());
-        renderReservas(rows);
-      } catch (e) { alertMsg('globalAlert', e.message); }
+      try { renderReservas(await api('/api/admin/reservas?' + p.toString())); }
+      catch (e) { alertMsg('globalAlert', e.message); }
     }
-
     function renderReservas(rows) {
       $('reservasEmpty').classList.toggle('hidden', rows.length > 0);
       $('reservasBody').innerHTML = rows.map((r) => `
@@ -359,20 +432,16 @@
           <td><span class="badge b-${r.estado}">${r.estado}</span></td>
           <td><div class="row-actions">${accionesHTML(r)}</div></td>
         </tr>`).join('');
-      document.querySelectorAll('[data-accion]').forEach((b) => {
-        b.addEventListener('click', () => accion(b.dataset.id, b.dataset.accion));
-      });
+      document.querySelectorAll('[data-accion]').forEach((b) => b.addEventListener('click', () => accion(b.dataset.id, b.dataset.accion)));
     }
-
     function accionesHTML(r) {
-      const btns = [];
-      if (r.estado === 'pendiente') btns.push(`<button class="btn btn-sm btn-green" data-accion="confirmada" data-id="${r.id}">Confirmar</button>`);
-      if (r.estado === 'confirmada') btns.push(`<button class="btn btn-sm btn-soft" data-accion="completada" data-id="${r.id}">Completar</button>`);
-      if (r.estado !== 'cancelada') btns.push(`<button class="btn btn-sm btn-danger" data-accion="cancelada" data-id="${r.id}">Cancelar</button>`);
-      btns.push(`<button class="btn btn-sm btn-soft" data-accion="eliminar" data-id="${r.id}">Eliminar</button>`);
-      return btns.join('');
+      const b = [];
+      if (r.estado === 'pendiente') b.push(`<button class="btn btn-sm btn-green" data-accion="confirmada" data-id="${r.id}">Confirmar</button>`);
+      if (r.estado === 'confirmada') b.push(`<button class="btn btn-sm btn-soft" data-accion="completada" data-id="${r.id}">Completar</button>`);
+      if (r.estado !== 'cancelada') b.push(`<button class="btn btn-sm btn-danger" data-accion="cancelada" data-id="${r.id}">Cancelar</button>`);
+      b.push(`<button class="btn btn-sm btn-soft" data-accion="eliminar" data-id="${r.id}">Eliminar</button>`);
+      return b.join('');
     }
-
     async function accion(id, accion) {
       try {
         if (accion === 'eliminar') {
@@ -381,67 +450,44 @@
         } else {
           await api('/api/admin/reservas/' + id, { method: 'PATCH', body: JSON.stringify({ estado: accion }) });
         }
-        await Promise.all([loadReservas(), loadStats()]);
+        await loadReservas();
         alertMsg('globalAlert', 'Reserva actualizada.', 'ok');
       } catch (e) { alertMsg('globalAlert', e.message); }
     }
-
     $('btnFiltrar').addEventListener('click', loadReservas);
     $('fQ').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadReservas(); });
-    $('btnLimpiar').addEventListener('click', () => {
-      $('fEstado').value = ''; $('fDesde').value = ''; $('fHasta').value = ''; $('fQ').value = '';
-      loadReservas();
-    });
+    $('btnLimpiar').addEventListener('click', () => { $('fEstado').value = ''; $('fDesde').value = ''; $('fHasta').value = ''; $('fQ').value = ''; loadReservas(); });
 
-    // ---------- Cabañas (select para bloqueos) ----------
+    // ---------- Cabañas ----------
     let CABANAS = [];
     async function loadCabanasSelect() {
       try {
         CABANAS = await api('/api/admin/cabanas');
-        $('bCabana').innerHTML = '<option value="">Todas las cabañas</option>' +
-          CABANAS.map((c) => `<option value="${c.id}">${c.nombre}</option>`).join('');
+        $('bCabana').innerHTML = '<option value="">Todas las cabañas</option>' + CABANAS.map((c) => `<option value="${c.id}">${c.nombre}</option>`).join('');
       } catch (e) { /* noop */ }
     }
-
-    // ---------- Cabañas (gestión) ----------
     async function loadCabanas() {
       try {
         CABANAS = await api('/api/admin/cabanas');
         $('cabanasList').innerHTML = CABANAS.map((c) => `
           <div class="panel" style="box-shadow:none; border:1px solid var(--line); padding:16px;">
             <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
-              <img src="${c.imagen}" alt="" style="width:90px; height:68px; object-fit:cover; border-radius:8px;">
-              <div style="flex:1; min-width:160px;">
-                <h3 style="color:var(--green-dark); font-size:1.25rem;">${c.nombre}</h3>
-                <span class="muted" style="font-size:.82rem;">${c.slug}</span>
-              </div>
+              <img src="${c.imagen}" alt="" style="width:96px; height:72px; object-fit:cover; border-radius:8px;">
+              <div style="flex:1; min-width:160px;"><h3 style="color:var(--green-dark); font-size:1.25rem;">${c.nombre}</h3><span class="muted" style="font-size:.82rem;">${c.slug}</span></div>
               <div class="fg"><label>Precio/noche</label><input type="number" class="field" style="width:130px;" id="precio-${c.id}" value="${c.precio_noche}"></div>
               <div class="fg"><label>Capacidad</label><input type="number" class="field" style="width:90px;" id="cap-${c.id}" value="${c.capacidad}"></div>
-              <div class="fg"><label>Disponible</label>
-                <select class="field" id="activa-${c.id}" style="width:120px;">
-                  <option value="true" ${c.activa ? 'selected' : ''}>Sí</option>
-                  <option value="false" ${!c.activa ? 'selected' : ''}>No</option>
-                </select>
-              </div>
+              <div class="fg"><label>Disponible</label><select class="field" id="activa-${c.id}" style="width:110px;"><option value="true" ${c.activa ? 'selected' : ''}>Sí</option><option value="false" ${!c.activa ? 'selected' : ''}>No</option></select></div>
               <button class="btn btn-green" data-save="${c.id}" style="align-self:flex-end;">Guardar</button>
             </div>
           </div>`).join('');
-        document.querySelectorAll('[data-save]').forEach((b) => {
-          b.addEventListener('click', () => guardarCabana(b.dataset.save));
-        });
+        document.querySelectorAll('[data-save]').forEach((b) => b.addEventListener('click', () => guardarCabana(b.dataset.save)));
       } catch (e) { alertMsg('globalAlert', e.message); }
     }
-
     async function guardarCabana(id) {
       try {
-        await api('/api/admin/cabanas/' + id, {
-          method: 'PATCH',
-          body: JSON.stringify({
-            precio_noche: $('precio-' + id).value,
-            capacidad: $('cap-' + id).value,
-            activa: $('activa-' + id).value === 'true',
-          }),
-        });
+        await api('/api/admin/cabanas/' + id, { method: 'PATCH', body: JSON.stringify({
+          precio_noche: $('precio-' + id).value, capacidad: $('cap-' + id).value, activa: $('activa-' + id).value === 'true',
+        }) });
         alertMsg('globalAlert', 'Cabaña actualizada.', 'ok');
         loadCabanasSelect();
       } catch (e) { alertMsg('globalAlert', e.message); }
@@ -453,34 +499,22 @@
         const rows = await api('/api/admin/bloqueos');
         $('bloqueosEmpty').classList.toggle('hidden', rows.length > 0);
         $('bloqueosBody').innerHTML = rows.map((b) => `
-          <tr>
-            <td>${b.cabana_nombre || '<b>Todas</b>'}</td>
-            <td>${fmtFecha(b.desde)}</td>
-            <td>${fmtFecha(b.hasta)}</td>
-            <td>${b.motivo || '—'}</td>
-            <td><button class="btn btn-sm btn-danger" data-delb="${b.id}">Eliminar</button></td>
-          </tr>`).join('');
-        document.querySelectorAll('[data-delb]').forEach((x) => {
-          x.addEventListener('click', async () => {
-            if (!confirm('¿Eliminar este bloqueo?')) return;
-            try { await api('/api/admin/bloqueos/' + x.dataset.delb, { method: 'DELETE' }); loadBloqueos(); }
-            catch (e) { alertMsg('globalAlert', e.message); }
-          });
-        });
+          <tr><td>${b.cabana_nombre || '<b>Todas</b>'}</td><td>${fmtFecha(b.desde)}</td><td>${fmtFecha(b.hasta)}</td><td>${b.motivo || '—'}</td>
+          <td><button class="btn btn-sm btn-danger" data-delb="${b.id}">Eliminar</button></td></tr>`).join('');
+        document.querySelectorAll('[data-delb]').forEach((x) => x.addEventListener('click', async () => {
+          if (!confirm('¿Eliminar este bloqueo?')) return;
+          try { await api('/api/admin/bloqueos/' + x.dataset.delb, { method: 'DELETE' }); loadBloqueos(); }
+          catch (e) { alertMsg('globalAlert', e.message); }
+        }));
       } catch (e) { alertMsg('globalAlert', e.message); }
     }
-
     $('btnBloquear').addEventListener('click', async () => {
       const desde = $('bDesde').value, hasta = $('bHasta').value;
       if (!desde || !hasta) return alertMsg('globalAlert', 'Indica las fechas del bloqueo.');
       try {
-        await api('/api/admin/bloqueos', {
-          method: 'POST',
-          body: JSON.stringify({ cabana_id: $('bCabana').value || null, desde, hasta, motivo: $('bMotivo').value }),
-        });
+        await api('/api/admin/bloqueos', { method: 'POST', body: JSON.stringify({ cabana_id: $('bCabana').value || null, desde, hasta, motivo: $('bMotivo').value }) });
         $('bDesde').value = ''; $('bHasta').value = ''; $('bMotivo').value = '';
-        loadBloqueos();
-        alertMsg('globalAlert', 'Bloqueo agregado.', 'ok');
+        loadBloqueos(); alertMsg('globalAlert', 'Bloqueo agregado.', 'ok');
       } catch (e) { alertMsg('globalAlert', e.message); }
     });
 
@@ -489,31 +523,21 @@
     const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
     $('calPrev').addEventListener('click', () => { calRef.setMonth(calRef.getMonth() - 1); renderCalendario(); });
     $('calNext').addEventListener('click', () => { calRef.setMonth(calRef.getMonth() + 1); renderCalendario(); });
-
     async function renderCalendario() {
       const year = calRef.getFullYear(), month = calRef.getMonth();
       $('calTitulo').textContent = MESES[month] + ' ' + year;
-      const first = new Date(year, month, 1);
       const daysInMonth = new Date(year, month + 1, 0).getDate();
-      let startDow = first.getDay(); // 0=Dom
-      startDow = startDow === 0 ? 6 : startDow - 1; // Lunes primero
-
+      let startDow = new Date(year, month, 1).getDay(); startDow = startDow === 0 ? 6 : startDow - 1;
       const desde = `${year}-${String(month + 1).padStart(2, '0')}-01`;
       const hasta = `${year}-${String(month + 1).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
-
       let reservas = [], bloqueos = [];
       try {
-        [reservas, bloqueos] = await Promise.all([
-          api(`/api/admin/reservas?desde=${desde}&hasta=${hasta}`),
-          api('/api/admin/bloqueos'),
-        ]);
+        [reservas, bloqueos] = await Promise.all([api(`/api/admin/reservas?desde=${desde}&hasta=${hasta}`), api('/api/admin/bloqueos')]);
       } catch (e) { alertMsg('globalAlert', e.message); }
       reservas = reservas.filter((r) => r.estado === 'pendiente' || r.estado === 'confirmada');
-
       const dow = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
       let html = dow.map((d) => `<div class="cal-dow">${d}</div>`).join('');
       for (let i = 0; i < startDow; i++) html += `<div class="cal-cell empty-cell"></div>`;
-
       const hoyStr = new Date().toISOString().slice(0, 10);
       for (let d = 1; d <= daysInMonth; d++) {
         const ds = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
@@ -526,10 +550,7 @@
     }
 
     // ---------- Arranque ----------
-    if (TOKEN) {
-      // valida token cargando stats
-      api('/api/admin/stats').then(enterApp).catch(logout);
-    }
+    if (TOKEN) api('/api/admin/stats').then(enterApp).catch(logout);
   </script>
 </body>
 </html>

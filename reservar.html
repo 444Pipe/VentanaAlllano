@@ -13,95 +13,117 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
       --green-dark: #1f3a2b; --green-mid: #355e3b; --green-light: #6b8e4e;
-      --cream: #f4efe6; --sand: #d9c9a8; --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b;
+      --cream: #f4efe6; --sand: #d9c9a8; --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e6e0d3;
     }
     body { font-family: 'Inter', sans-serif; color: var(--ink); background: var(--cream); line-height: 1.6; }
     h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; }
     img { max-width: 100%; display: block; }
     a { color: inherit; }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
 
     /* Top bar */
-    .topbar { background: var(--green-dark); color: white; padding: 16px 0; }
+    .topbar { background: var(--green-dark); color: white; padding: 14px 0; position: sticky; top: 0; z-index: 50; }
     .topbar .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
-    .brand img { height: 42px; width: auto; background: rgba(255,255,255,.92); border-radius: 7px; padding: 4px 7px; }
-    .brand small { display: block; font-size: .68rem; letter-spacing: 2.5px; text-transform: uppercase; opacity: .8; }
-    .brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; }
+    .brand img { height: 40px; width: auto; background: rgba(255,255,255,.92); border-radius: 7px; padding: 4px 7px; }
+    .brand small { display: block; font-size: .66rem; letter-spacing: 2.5px; text-transform: uppercase; opacity: .8; }
+    .brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; font-weight: 600; }
     .back-link { color: var(--sand); text-decoration: none; font-size: .9rem; font-weight: 500; }
     .back-link:hover { color: white; }
 
-    /* Hero strip */
-    .head { background: var(--green-mid); color: white; padding: 46px 0; text-align: center; }
-    .head h1 { font-size: clamp(2rem, 4vw, 3rem); }
+    /* Hero band */
+    .head {
+      color: white; padding: 60px 0 130px; text-align: center; position: relative;
+      background: linear-gradient(rgba(31,58,43,.62), rgba(31,58,43,.78)),
+        url('statics/piscina-infinita/SaveClip.App_499039082_17977269467850600_1554016418580416870_n.jpg') center/cover;
+    }
+    .head h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
     .head h1 em { font-style: italic; color: var(--sand); }
-    .head p { opacity: .9; margin-top: 8px; }
+    .head p { opacity: .92; margin-top: 10px; font-weight: 300; font-size: 1.05rem; }
 
-    .wrap { padding: 40px 0 80px; }
+    .wrap { margin-top: -90px; padding-bottom: 80px; position: relative; z-index: 2; }
 
     /* Stepper */
-    .steps { display: flex; gap: 8px; justify-content: center; margin-bottom: 34px; flex-wrap: wrap; }
-    .step { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .85rem; font-weight: 600; }
-    .step .num { width: 26px; height: 26px; border-radius: 50%; background: #e3dccd; color: var(--muted);
-      display: flex; align-items: center; justify-content: center; font-size: .82rem; }
-    .step.active { color: var(--green-dark); }
-    .step.active .num { background: var(--green-mid); color: white; }
-    .step.done .num { background: var(--terra); color: white; }
-    .step-sep { width: 26px; height: 2px; background: #e3dccd; align-self: center; }
+    .steps { display: flex; gap: 6px; justify-content: center; margin: 0 auto 26px; flex-wrap: wrap; }
+    .step { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,.7); font-size: .82rem; font-weight: 600; }
+    .step .num { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.25); color: white;
+      display: flex; align-items: center; justify-content: center; font-size: .82rem; transition: all .25s; }
+    .step.active { color: white; }
+    .step.active .num { background: var(--terra); }
+    .step.done .num { background: var(--green-light); }
+    .step-sep { width: 22px; height: 2px; background: rgba(255,255,255,.3); align-self: center; }
 
-    .card { background: white; border-radius: 12px; box-shadow: 0 20px 50px -28px rgba(0,0,0,.25); padding: 30px; }
+    .card { background: white; border-radius: 16px; box-shadow: 0 28px 60px -30px rgba(0,0,0,.4); padding: 30px; }
     .card + .card { margin-top: 24px; }
 
-    label { display: block; font-size: .82rem; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
+    label { display: block; font-size: .8rem; font-weight: 600; color: var(--green-dark); margin-bottom: 7px; }
     input, textarea, select {
-      width: 100%; padding: 12px 14px; border: 1.5px solid #e0d9c9; border-radius: 9px;
-      font-family: inherit; font-size: .95rem; background: #fcfaf5; color: var(--ink); transition: border-color .2s;
+      width: 100%; padding: 13px 14px; border: 1.5px solid var(--line); border-radius: 11px;
+      font-family: inherit; font-size: .95rem; background: #fcfaf5; color: var(--ink); transition: border-color .2s, box-shadow .2s;
     }
-    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--green-mid); }
-    textarea { resize: vertical; min-height: 84px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 700px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(53,94,59,.1); }
+    textarea { resize: vertical; min-height: 88px; }
+
+    /* Search bar */
+    .searchbar { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 16px; align-items: end; }
+    .stepper-num { display: flex; align-items: center; gap: 10px; }
+    .stepper-num button { width: 38px; height: 44px; border: 1.5px solid var(--line); background: #fcfaf5; border-radius: 10px;
+      font-size: 1.3rem; cursor: pointer; color: var(--green-dark); flex-shrink: 0; line-height: 1; }
+    .stepper-num button:hover { border-color: var(--green-mid); background: #fff; }
+    .stepper-num input { text-align: center; width: 56px; padding: 12px 4px; -moz-appearance: textfield; }
+    .stepper-num input::-webkit-outer-spin-button, .stepper-num input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    @media (max-width: 820px) { .searchbar { grid-template-columns: 1fr 1fr; } .searchbar .btn { grid-column: 1/-1; } }
 
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       padding: 14px 28px; border-radius: 50px; border: none; cursor: pointer;
-      font-family: inherit; font-weight: 600; font-size: .95rem; transition: all .25s;
+      font-family: inherit; font-weight: 600; font-size: .95rem; transition: all .25s; white-space: nowrap;
     }
     .btn-primary { background: var(--terra); color: white; }
-    .btn-primary:hover { background: #a04e2c; }
-    .btn-primary:disabled { opacity: .55; cursor: not-allowed; }
-    .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid #d8cfbb; }
+    .btn-primary:hover { background: #a04e2c; transform: translateY(-1px); }
+    .btn-primary:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid var(--line); }
     .btn-ghost:hover { background: #f0ead7; border-color: var(--green-mid); }
     .btn-wa { background: #25D366; color: white; }
     .btn-wa:hover { background: #1da851; }
     .btn-block { width: 100%; }
+    .btn-lg { padding: 15px 30px; }
 
-    .section-title { font-size: 1.5rem; color: var(--green-dark); margin-bottom: 4px; }
-    .section-sub { color: var(--muted); font-size: .92rem; margin-bottom: 22px; }
+    .card-title { font-size: 1.6rem; color: var(--green-dark); margin-bottom: 4px; }
+    .card-sub { color: var(--muted); font-size: .93rem; margin-bottom: 24px; }
 
     /* Cabaña cards */
-    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; }
     .cab {
-      border: 2px solid #ece5d6; border-radius: 12px; overflow: hidden; cursor: pointer;
-      transition: border-color .2s, transform .2s, box-shadow .2s; background: #fff;
+      border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
+      transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column;
     }
-    .cab:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(0,0,0,.3); }
-    .cab.selected { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(184,92,56,.15); }
-    .cab-img { aspect-ratio: 4/3; background: #ddd; }
+    .cab:hover { transform: translateY(-4px); box-shadow: 0 22px 46px -26px rgba(0,0,0,.35); }
+    .cab.selected { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(184,92,56,.18); }
+    .cab-img { aspect-ratio: 16/11; position: relative; background: #ddd; }
     .cab-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cab-body { padding: 16px 18px; }
-    .cab-body h3 { font-size: 1.35rem; color: var(--green-dark); }
-    .cab-body .cap { font-size: .82rem; color: var(--muted); margin: 2px 0 10px; }
-    .cab-price { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-    .cab-price .pn { color: var(--muted); font-size: .82rem; }
-    .cab-price .tot { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: var(--terra); font-weight: 600; }
+    .cab-tag { position: absolute; top: 12px; left: 12px; background: rgba(31,58,43,.85); color: white;
+      font-size: .72rem; padding: 5px 12px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(4px); }
+    .cab-body { padding: 18px 20px; display: flex; flex-direction: column; flex: 1; }
+    .cab-body h3 { font-size: 1.45rem; color: var(--green-dark); }
+    .cab-desc { font-size: .86rem; color: var(--muted); margin: 6px 0 12px; flex: 1; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .chip { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .74rem; padding: 4px 10px; border-radius: 50px; }
+    .cab-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
+    .cab-foot .pn { color: var(--muted); font-size: .78rem; }
+    .cab-foot .tot { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--terra); font-weight: 600; line-height: 1; }
 
-    .summary { background: #f7f3ea; border-radius: 10px; padding: 18px 20px; }
-    .summary .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: .92rem; }
-    .summary .row.total { border-top: 1.5px solid #e3dccd; margin-top: 8px; padding-top: 12px; font-weight: 700; font-size: 1.05rem; color: var(--green-dark); }
+    /* Two-column step 3 */
+    .cols { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
+    @media (max-width: 880px) { .cols { grid-template-columns: 1fr; } }
+    .summary-card { position: sticky; top: 90px; }
+    .summary-img { aspect-ratio: 16/10; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+    .summary-img img { width: 100%; height: 100%; object-fit: cover; }
+    .summary .row { display: flex; justify-content: space-between; padding: 7px 0; font-size: .92rem; gap: 12px; }
+    .summary .row span:first-child { color: var(--muted); }
+    .summary .row.total { border-top: 1.5px solid var(--line); margin-top: 8px; padding-top: 13px; font-weight: 700; font-size: 1.1rem; color: var(--green-dark); }
 
-    .alert { padding: 12px 16px; border-radius: 9px; font-size: .9rem; margin-bottom: 18px; }
+    .alert { padding: 12px 16px; border-radius: 10px; font-size: .9rem; margin-bottom: 18px; }
     .alert-error { background: #fdecea; color: #b03a2e; border: 1px solid #f5c6c0; }
     .alert-info { background: #eef4ee; color: var(--green-dark); border: 1px solid #cfe0cf; }
 
@@ -111,13 +133,16 @@
     .spinner { display: inline-block; width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,.4);
       border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .fade { animation: fade .4s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
     /* Success */
-    .success-icon { width: 70px; height: 70px; margin: 0 auto 16px; border-radius: 50%; background: var(--green-mid);
-      color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+    .success-icon { width: 76px; height: 76px; margin: 0 auto 16px; border-radius: 50%; background: var(--green-mid);
+      color: white; display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
+      box-shadow: 0 0 0 8px rgba(53,94,59,.12); }
     .code-box { display: inline-block; background: var(--green-dark); color: var(--sand); font-weight: 700;
-      letter-spacing: 2px; padding: 10px 22px; border-radius: 8px; font-size: 1.2rem; margin: 12px 0; }
-    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+      letter-spacing: 2px; padding: 11px 26px; border-radius: 10px; font-size: 1.25rem; margin: 14px 0; }
+    .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
   </style>
 </head>
 <body>
@@ -154,10 +179,10 @@
       <div id="alertBox"></div>
 
       <!-- PASO 1: Fechas -->
-      <section class="card" id="paso1">
-        <h2 class="section-title">¿Cuándo nos visitas?</h2>
-        <p class="section-sub">Selecciona las fechas y el número de huéspedes.</p>
-        <div class="grid-3">
+      <section class="card fade" id="paso1">
+        <h2 class="card-title">¿Cuándo nos visitas?</h2>
+        <p class="card-sub">Selecciona las fechas y el número de huéspedes para ver las cabañas disponibles.</p>
+        <div class="searchbar">
           <div>
             <label for="entrada">Fecha de entrada</label>
             <input type="date" id="entrada">
@@ -167,63 +192,70 @@
             <input type="date" id="salida">
           </div>
           <div>
-            <label for="personas">Huéspedes</label>
-            <input type="number" id="personas" min="1" max="12" value="2">
+            <label>Huéspedes</label>
+            <div class="stepper-num">
+              <button type="button" id="gMinus" aria-label="Menos">−</button>
+              <input type="number" id="personas" min="1" max="12" value="2">
+              <button type="button" id="gPlus" aria-label="Más">+</button>
+            </div>
           </div>
-        </div>
-        <div style="margin-top: 22px;">
-          <button class="btn btn-primary" id="btnBuscar">Buscar disponibilidad</button>
+          <button class="btn btn-primary btn-lg" id="btnBuscar">Buscar</button>
         </div>
       </section>
 
       <!-- PASO 2: Cabañas -->
       <section class="card hidden" id="paso2">
-        <h2 class="section-title">Cabañas disponibles</h2>
-        <p class="section-sub" id="paso2sub"></p>
+        <h2 class="card-title">Cabañas disponibles</h2>
+        <p class="card-sub" id="paso2sub"></p>
         <div class="cab-grid" id="cabGrid"></div>
-        <div style="margin-top: 22px;">
+        <div style="margin-top: 24px;">
           <button class="btn btn-ghost" id="btnVolver1">← Cambiar fechas</button>
         </div>
       </section>
 
       <!-- PASO 3: Datos -->
       <section class="card hidden" id="paso3">
-        <h2 class="section-title">Completa tu reserva</h2>
-        <p class="section-sub">Tus datos para confirmar la solicitud.</p>
-        <div class="grid-2">
+        <h2 class="card-title">Completa tu reserva</h2>
+        <p class="card-sub">Solo necesitamos tus datos para confirmar la solicitud.</p>
+        <div class="cols">
           <div>
-            <label for="nombre">Nombre completo *</label>
-            <input type="text" id="nombre" placeholder="Ej: Ana Martínez">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div>
+                <label for="nombre">Nombre completo *</label>
+                <input type="text" id="nombre" placeholder="Ej: Ana Martínez">
+              </div>
+              <div>
+                <label for="telefono">Teléfono / WhatsApp *</label>
+                <input type="tel" id="telefono" placeholder="Ej: 311 382 2023">
+              </div>
+            </div>
+            <div style="margin-top: 16px;">
+              <label for="email">Correo electrónico (opcional)</label>
+              <input type="email" id="email" placeholder="tucorreo@ejemplo.com">
+            </div>
+            <div style="margin-top: 16px;">
+              <label for="notas">Notas o solicitudes especiales (opcional)</label>
+              <textarea id="notas" placeholder="Ej: llegamos en la noche, celebramos aniversario..."></textarea>
+            </div>
+            <div style="margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap;">
+              <button class="btn btn-ghost" id="btnVolver2">← Volver</button>
+              <button class="btn btn-primary" id="btnConfirmar">Enviar solicitud de reserva</button>
+            </div>
           </div>
-          <div>
-            <label for="telefono">Teléfono / WhatsApp *</label>
-            <input type="tel" id="telefono" placeholder="Ej: 311 382 2023">
-          </div>
-        </div>
-        <div style="margin-top: 16px;">
-          <label for="email">Correo electrónico (opcional)</label>
-          <input type="email" id="email" placeholder="tucorreo@ejemplo.com">
-        </div>
-        <div style="margin-top: 16px;">
-          <label for="notas">Notas o solicitudes especiales (opcional)</label>
-          <textarea id="notas" placeholder="Ej: llegamos en la noche, celebramos aniversario..."></textarea>
-        </div>
-
-        <div class="summary" style="margin-top: 22px;" id="resumen"></div>
-
-        <div style="margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap;">
-          <button class="btn btn-ghost" id="btnVolver2">← Volver</button>
-          <button class="btn btn-primary" id="btnConfirmar">Enviar solicitud de reserva</button>
+          <aside class="card summary-card" style="box-shadow:none; border:1px solid var(--line); background:#fcfaf5;">
+            <div class="summary-img" id="sumImg"></div>
+            <div class="summary" id="resumen"></div>
+          </aside>
         </div>
       </section>
 
       <!-- PASO 4: Éxito -->
       <section class="card hidden center" id="paso4">
         <div class="success-icon">✓</div>
-        <h2 class="section-title">¡Solicitud enviada!</h2>
+        <h2 class="card-title">¡Solicitud enviada!</h2>
         <p class="muted">Tu reserva quedó registrada como <b>pendiente</b>. Para confirmarla y coordinar el abono, escríbenos por WhatsApp con tu código.</p>
         <div class="code-box" id="codigoBox"></div>
-        <div class="summary center" id="resumenFinal" style="text-align:left; max-width:420px; margin:18px auto 0;"></div>
+        <div class="summary" id="resumenFinal" style="text-align:left; max-width:420px; margin:18px auto 0;"></div>
         <div class="actions">
           <a class="btn btn-wa" id="waBtn" target="_blank" rel="noopener">Confirmar por WhatsApp</a>
           <a class="btn btn-ghost" href="reservar.html">Hacer otra reserva</a>
@@ -234,28 +266,33 @@
 
   <script>
     const WHATSAPP = '573113822023';
+    const PERKS = ['Piscina infinita', 'Desayuno llanero', 'WiFi', 'Parqueadero'];
     const fmt = (n) => '$' + Number(n).toLocaleString('es-CO');
     const fmtFecha = (s) => new Date(s + 'T00:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
     const $ = (id) => document.getElementById(id);
 
     const state = { entrada: null, salida: null, personas: 2, noches: 0, cabana: null };
 
-    // Mínimos de fecha = hoy
+    // Mínimos de fecha
     const hoy = new Date().toISOString().slice(0, 10);
-    $('entrada').min = hoy;
-    $('salida').min = hoy;
+    $('entrada').min = hoy; $('salida').min = hoy;
     $('entrada').addEventListener('change', () => {
       const next = new Date($('entrada').value + 'T00:00:00');
       next.setDate(next.getDate() + 1);
-      $('salida').min = next.toISOString().slice(0, 10);
-      if ($('salida').value && $('salida').value <= $('entrada').value) $('salida').value = next.toISOString().slice(0, 10);
+      const nx = next.toISOString().slice(0, 10);
+      $('salida').min = nx;
+      if (!$('salida').value || $('salida').value <= $('entrada').value) $('salida').value = nx;
     });
+
+    // Stepper huéspedes
+    $('gMinus').addEventListener('click', () => { $('personas').value = Math.max(1, (+$('personas').value || 1) - 1); });
+    $('gPlus').addEventListener('click', () => { $('personas').value = Math.min(12, (+$('personas').value || 1) + 1); });
 
     function showAlert(msg, type = 'error') {
       $('alertBox').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    function clearAlert() { $('alertBox').innerHTML = ''; }
+    const clearAlert = () => { $('alertBox').innerHTML = ''; };
 
     function setStep(n) {
       [1, 2, 3, 4].forEach((i) => {
@@ -266,11 +303,12 @@
     }
     function goto(paso) {
       ['paso1', 'paso2', 'paso3', 'paso4'].forEach((p) => $(p).classList.add('hidden'));
-      $('paso' + paso).classList.remove('hidden');
+      const el = $('paso' + paso);
+      el.classList.remove('hidden'); el.classList.remove('fade'); void el.offsetWidth; el.classList.add('fade');
       setStep(paso);
     }
 
-    // ----- Paso 1: buscar disponibilidad -----
+    // Paso 1
     $('btnBuscar').addEventListener('click', async () => {
       clearAlert();
       const entrada = $('entrada').value, salida = $('salida').value;
@@ -287,11 +325,8 @@
         Object.assign(state, { entrada, salida, personas, noches: data.noches });
         renderCabanas(data.cabanas);
         goto(2);
-      } catch (e) {
-        showAlert(e.message);
-      } finally {
-        btn.disabled = false; btn.textContent = 'Buscar disponibilidad';
-      }
+      } catch (e) { showAlert(e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Buscar'; }
     });
 
     function renderCabanas(cabanas) {
@@ -305,25 +340,23 @@
       const preselect = new URLSearchParams(location.search).get('cabana');
       $('cabGrid').innerHTML = cabanas.map((c) => `
         <div class="cab" data-id="${c.id}">
-          <div class="cab-img"><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
+          <div class="cab-img"><span class="cab-tag">Hasta ${c.capacidad} personas</span><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
           <div class="cab-body">
             <h3>${c.nombre}</h3>
-            <div class="cap">Hasta ${c.capacidad} personas</div>
-            <div class="cab-price">
-              <span class="pn">${fmt(c.precio_noche)} / noche</span>
-              <span class="tot">${fmt(c.total)}</span>
+            <p class="cab-desc">${c.descripcion || ''}</p>
+            <div class="chips">${PERKS.map((p) => `<span class="chip">${p}</span>`).join('')}</div>
+            <div class="cab-foot">
+              <div><div class="pn">${fmt(c.precio_noche)} / noche</div><div class="tot">${fmt(c.total)}</div><div class="pn">total ${state.noches} noche(s)</div></div>
+              <button class="btn btn-primary">Reservar</button>
             </div>
-            <div class="pn" style="text-align:right; color:var(--muted); font-size:.78rem;">total ${state.noches} noche(s)</div>
-            <button class="btn btn-primary btn-block" style="margin-top:14px;">Seleccionar</button>
           </div>
         </div>`).join('');
 
       document.querySelectorAll('.cab').forEach((el) => {
-        el.addEventListener('click', () => {
-          const id = Number(el.dataset.id);
-          const c = cabanas.find((x) => x.id === id);
-          selectCabana(c);
-        });
+        const id = Number(el.dataset.id);
+        const c = cabanas.find((x) => x.id === id);
+        el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); selectCabana(c); });
+        el.addEventListener('click', () => selectCabana(c));
       });
 
       if (preselect) {
@@ -334,6 +367,7 @@
 
     function selectCabana(c) {
       state.cabana = c;
+      $('sumImg').innerHTML = `<img src="${c.imagen}" alt="${c.nombre}">`;
       $('resumen').innerHTML = resumenHTML();
       goto(3);
     }
@@ -353,7 +387,7 @@
     $('btnVolver1').addEventListener('click', () => { clearAlert(); goto(1); });
     $('btnVolver2').addEventListener('click', () => { clearAlert(); goto(2); });
 
-    // ----- Paso 3: confirmar -----
+    // Paso 3
     $('btnConfirmar').addEventListener('click', async () => {
       clearAlert();
       const nombre = $('nombre').value.trim();
@@ -375,11 +409,8 @@
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || 'No se pudo crear la reserva');
         mostrarExito(data.codigo);
-      } catch (e) {
-        showAlert(e.message);
-      } finally {
-        btn.disabled = false; btn.textContent = 'Enviar solicitud de reserva';
-      }
+      } catch (e) { showAlert(e.message); }
+      finally { btn.disabled = false; btn.textContent = 'Enviar solicitud de reserva'; }
     });
 
     function mostrarExito(codigo) {

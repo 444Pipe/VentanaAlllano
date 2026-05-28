@@ -10,6 +10,7 @@ const repo = require('./repo');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const JWT_SECRET = process.env.JWT_SECRET || 'ventana-al-llano-dev-secret-cambia-esto';
 
@@ -130,16 +131,20 @@ app.post('/api/reservas', wrap(async (req, res) => {
 //  API ADMIN
 // ============================================================
 app.post('/api/admin/login', wrap(async (req, res) => {
-  const { password } = req.body || {};
-  if (!password || password !== ADMIN_PASSWORD) {
-    return res.status(401).json({ error: 'Contraseña incorrecta' });
+  const { username, password } = req.body || {};
+  if (!username || !password || username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Usuario o contraseña incorrectos' });
   }
-  const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '12h' });
+  const token = jwt.sign({ role: 'admin', user: username }, JWT_SECRET, { expiresIn: '12h' });
   res.json({ token });
 }));
 
 app.get('/api/admin/stats', authRequired, wrap(async (req, res) => {
   res.json(await repo.stats());
+}));
+
+app.get('/api/admin/analytics', authRequired, wrap(async (req, res) => {
+  res.json(await repo.analytics());
 }));
 
 app.get('/api/admin/reservas', authRequired, wrap(async (req, res) => {

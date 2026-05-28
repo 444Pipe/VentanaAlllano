@@ -23,7 +23,7 @@ Abre http://localhost:3000
 - Sin `DATABASE_URL`, usa un almacén **en memoria** (se borra al reiniciar) — perfecto para probar.
 - Para usar Postgres en local, copia `.env.example` a `.env` y completa `DATABASE_URL`.
 
-Panel admin: http://localhost:3000/admin — contraseña por defecto `admin123` (cámbiala con `ADMIN_PASSWORD`).
+Panel admin: http://localhost:3000/admin — usuario `admin` y contraseña `admin123` por defecto (cámbialos con `ADMIN_USERNAME` y `ADMIN_PASSWORD`).
 
 ## Desplegar en Railway
 
@@ -31,6 +31,7 @@ Panel admin: http://localhost:3000/admin — contraseña por defecto `admin123` 
 2. En Railway: **New Project → Deploy from GitHub repo** y elige el repo.
 3. **Add → Database → PostgreSQL**. Railway crea la variable `DATABASE_URL` y la enlaza al servicio.
 4. En el servicio web, pestaña **Variables**, agrega:
+   - `ADMIN_USERNAME` = tu usuario del panel (por defecto `admin`)
    - `ADMIN_PASSWORD` = tu contraseña del panel
    - `JWT_SECRET` = una cadena larga y aleatoria
    - `NODE_ENV` = `production`
@@ -44,6 +45,7 @@ Panel admin: http://localhost:3000/admin — contraseña por defecto `admin123` 
 | Variable        | Descripción                                              |
 |-----------------|----------------------------------------------------------|
 | `DATABASE_URL`  | Conexión a PostgreSQL (la pone Railway).                 |
+| `ADMIN_USERNAME`| Usuario del panel `/admin` (por defecto `admin`).        |
 | `ADMIN_PASSWORD`| Contraseña del panel `/admin`.                           |
 | `JWT_SECRET`    | Secreto para firmar las sesiones del admin.              |
 | `PORT`          | Puerto (Railway lo define automáticamente).              |

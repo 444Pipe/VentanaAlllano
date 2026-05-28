@@ -64,15 +64,15 @@
     input:focus, textarea:focus, select:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(53,94,59,.1); }
     textarea { resize: vertical; min-height: 88px; }
 
-    /* Search bar */
-    .searchbar { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 16px; align-items: end; }
+    /* Date picker row */
+    .daterow { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 16px; align-items: end; }
     .stepper-num { display: flex; align-items: center; gap: 10px; }
     .stepper-num button { width: 38px; height: 44px; border: 1.5px solid var(--line); background: #fcfaf5; border-radius: 10px;
       font-size: 1.3rem; cursor: pointer; color: var(--green-dark); flex-shrink: 0; line-height: 1; }
     .stepper-num button:hover { border-color: var(--green-mid); background: #fff; }
     .stepper-num input { text-align: center; width: 56px; padding: 12px 4px; -moz-appearance: textfield; }
     .stepper-num input::-webkit-outer-spin-button, .stepper-num input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    @media (max-width: 820px) { .searchbar { grid-template-columns: 1fr 1fr; } .searchbar .btn { grid-column: 1/-1; } }
+    @media (max-width: 820px) { .daterow { grid-template-columns: 1fr 1fr; } .daterow .btn { grid-column: 1/-1; } }
 
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -111,9 +111,17 @@
     .chip { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .74rem; padding: 4px 10px; border-radius: 50px; }
     .cab-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
     .cab-foot .pn { color: var(--muted); font-size: .78rem; }
-    .cab-foot .tot { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--terra); font-weight: 600; line-height: 1; }
+    .cab-foot .price { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; color: var(--terra); font-weight: 600; line-height: 1; }
 
-    /* Two-column step 3 */
+    /* Selected cabaña banner (paso fechas) */
+    .picked { display: flex; align-items: center; gap: 16px; background: #f7f3ea; border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px 16px; margin-bottom: 22px; }
+    .picked img { width: 78px; height: 58px; object-fit: cover; border-radius: 9px; flex-shrink: 0; }
+    .picked h4 { font-size: 1.2rem; color: var(--green-dark); }
+    .picked .pn { color: var(--muted); font-size: .82rem; }
+    .picked a { margin-left: auto; color: var(--terra); font-size: .85rem; font-weight: 600; text-decoration: none; cursor: pointer; white-space: nowrap; }
+
+    /* Two-column step datos */
     .cols { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
     @media (max-width: 880px) { .cols { grid-template-columns: 1fr; } }
     .summary-card { position: sticky; top: 90px; }
@@ -159,7 +167,7 @@
   <div class="head">
     <div class="container">
       <h1>Reserva tu <em>hospedaje</em></h1>
-      <p>Elige tus fechas, escoge tu cabaña y envía tu solicitud. Te confirmamos por WhatsApp.</p>
+      <p>Elige tu cabaña, selecciona tus fechas y envía tu solicitud. Te confirmamos por WhatsApp.</p>
     </div>
   </div>
 
@@ -167,9 +175,9 @@
     <div class="container">
       <!-- Stepper -->
       <div class="steps">
-        <div class="step active" id="stp1"><span class="num">1</span> Fechas</div>
+        <div class="step active" id="stp1"><span class="num">1</span> Cabaña</div>
         <div class="step-sep"></div>
-        <div class="step" id="stp2"><span class="num">2</span> Cabaña</div>
+        <div class="step" id="stp2"><span class="num">2</span> Fechas</div>
         <div class="step-sep"></div>
         <div class="step" id="stp3"><span class="num">3</span> Tus datos</div>
         <div class="step-sep"></div>
@@ -178,11 +186,19 @@
 
       <div id="alertBox"></div>
 
-      <!-- PASO 1: Fechas -->
+      <!-- PASO 1: Elegir cabaña -->
       <section class="card fade" id="paso1">
-        <h2 class="card-title">¿Cuándo nos visitas?</h2>
-        <p class="card-sub">Selecciona las fechas y el número de huéspedes para ver las cabañas disponibles.</p>
-        <div class="searchbar">
+        <h2 class="card-title">Elige tu cabaña</h2>
+        <p class="card-sub">Estas son nuestras cabañas. Escoge la que más te guste para continuar.</p>
+        <div class="cab-grid" id="cabGrid"><p class="muted">Cargando cabañas...</p></div>
+      </section>
+
+      <!-- PASO 2: Fechas -->
+      <section class="card hidden" id="paso2">
+        <h2 class="card-title">Elige tus fechas</h2>
+        <p class="card-sub">Selecciona la entrada, la salida y el número de huéspedes.</p>
+        <div class="picked" id="picked"></div>
+        <div class="daterow">
           <div>
             <label for="entrada">Fecha de entrada</label>
             <input type="date" id="entrada">
@@ -199,17 +215,10 @@
               <button type="button" id="gPlus" aria-label="Más">+</button>
             </div>
           </div>
-          <button class="btn btn-primary btn-lg" id="btnBuscar">Buscar</button>
+          <button class="btn btn-primary btn-lg" id="btnFechas">Continuar</button>
         </div>
-      </section>
-
-      <!-- PASO 2: Cabañas -->
-      <section class="card hidden" id="paso2">
-        <h2 class="card-title">Cabañas disponibles</h2>
-        <p class="card-sub" id="paso2sub"></p>
-        <div class="cab-grid" id="cabGrid"></div>
-        <div style="margin-top: 24px;">
-          <button class="btn btn-ghost" id="btnVolver1">← Cambiar fechas</button>
+        <div style="margin-top: 22px;">
+          <button class="btn btn-ghost" id="btnVolver1">← Cambiar cabaña</button>
         </div>
       </section>
 
@@ -271,22 +280,7 @@
     const fmtFecha = (s) => new Date(s + 'T00:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
     const $ = (id) => document.getElementById(id);
 
-    const state = { entrada: null, salida: null, personas: 2, noches: 0, cabana: null };
-
-    // Mínimos de fecha
-    const hoy = new Date().toISOString().slice(0, 10);
-    $('entrada').min = hoy; $('salida').min = hoy;
-    $('entrada').addEventListener('change', () => {
-      const next = new Date($('entrada').value + 'T00:00:00');
-      next.setDate(next.getDate() + 1);
-      const nx = next.toISOString().slice(0, 10);
-      $('salida').min = nx;
-      if (!$('salida').value || $('salida').value <= $('entrada').value) $('salida').value = nx;
-    });
-
-    // Stepper huéspedes
-    $('gMinus').addEventListener('click', () => { $('personas').value = Math.max(1, (+$('personas').value || 1) - 1); });
-    $('gPlus').addEventListener('click', () => { $('personas').value = Math.min(12, (+$('personas').value || 1) + 1); });
+    const state = { cabana: null, entrada: null, salida: null, personas: 2, noches: 0 };
 
     function showAlert(msg, type = 'error') {
       $('alertBox').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
@@ -308,69 +302,101 @@
       setStep(paso);
     }
 
-    // Paso 1
-    $('btnBuscar').addEventListener('click', async () => {
+    // ----- Paso 1: cargar y elegir cabaña -----
+    async function loadCabanas() {
+      try {
+        const cabanas = await fetch('/api/cabanas').then((r) => r.json());
+        if (!Array.isArray(cabanas) || !cabanas.length) {
+          $('cabGrid').innerHTML = `<div class="alert alert-info" style="grid-column:1/-1">No hay cabañas disponibles por ahora. Escríbenos por WhatsApp.</div>`;
+          return;
+        }
+        $('cabGrid').innerHTML = cabanas.map((c) => `
+          <div class="cab" data-id="${c.id}">
+            <div class="cab-img"><span class="cab-tag">Hasta ${c.capacidad} personas</span><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
+            <div class="cab-body">
+              <h3>${c.nombre}</h3>
+              <p class="cab-desc">${c.descripcion || ''}</p>
+              <div class="chips">${PERKS.map((p) => `<span class="chip">${p}</span>`).join('')}</div>
+              <div class="cab-foot">
+                <div><div class="pn">desde</div><div class="price">${fmt(c.precio_noche)}</div><div class="pn">por noche</div></div>
+                <button class="btn btn-primary">Elegir</button>
+              </div>
+            </div>
+          </div>`).join('');
+
+        document.querySelectorAll('.cab').forEach((el) => {
+          const id = Number(el.dataset.id);
+          const c = cabanas.find((x) => x.id === id);
+          el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); pickCabana(c); });
+          el.addEventListener('click', () => pickCabana(c));
+        });
+
+        const preselect = new URLSearchParams(location.search).get('cabana');
+        if (preselect) {
+          const match = cabanas.find((c) => c.slug === preselect);
+          if (match) pickCabana(match);
+        }
+      } catch (e) {
+        $('cabGrid').innerHTML = `<div class="alert alert-error" style="grid-column:1/-1">No se pudieron cargar las cabañas. Intenta recargar la página.</div>`;
+      }
+    }
+
+    function pickCabana(c) {
+      state.cabana = c;
+      $('picked').innerHTML = `
+        <img src="${c.imagen}" alt="${c.nombre}">
+        <div><h4>${c.nombre}</h4><div class="pn">${fmt(c.precio_noche)} / noche · hasta ${c.capacidad} personas</div></div>
+        <a id="cambiarCab">Cambiar</a>`;
+      $('cambiarCab').addEventListener('click', () => { clearAlert(); goto(1); });
+      if (Number($('personas').value) > c.capacidad) $('personas').value = c.capacidad;
+      $('personas').max = c.capacidad;
+      goto(2);
+    }
+
+    // ----- Paso 2: fechas -----
+    const hoy = new Date().toISOString().slice(0, 10);
+    $('entrada').min = hoy; $('salida').min = hoy;
+    $('entrada').addEventListener('change', () => {
+      const next = new Date($('entrada').value + 'T00:00:00');
+      next.setDate(next.getDate() + 1);
+      const nx = next.toISOString().slice(0, 10);
+      $('salida').min = nx;
+      if (!$('salida').value || $('salida').value <= $('entrada').value) $('salida').value = nx;
+    });
+    $('gMinus').addEventListener('click', () => { $('personas').value = Math.max(1, (+$('personas').value || 1) - 1); });
+    $('gPlus').addEventListener('click', () => {
+      const max = state.cabana ? state.cabana.capacidad : 12;
+      $('personas').value = Math.min(max, (+$('personas').value || 1) + 1);
+    });
+
+    $('btnFechas').addEventListener('click', async () => {
       clearAlert();
       const entrada = $('entrada').value, salida = $('salida').value;
       const personas = parseInt($('personas').value, 10) || 1;
       if (!entrada || !salida) return showAlert('Por favor selecciona las fechas de entrada y salida.');
       if (salida <= entrada) return showAlert('La fecha de salida debe ser posterior a la de entrada.');
+      if (personas > state.cabana.capacidad) return showAlert(`La cabaña ${state.cabana.nombre} admite hasta ${state.cabana.capacidad} personas.`);
 
-      const btn = $('btnBuscar');
-      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Buscando...';
+      const btn = $('btnFechas');
+      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Verificando...';
       try {
         const r = await fetch(`/api/disponibilidad?entrada=${entrada}&salida=${salida}&personas=${personas}`);
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || 'Error al consultar disponibilidad');
+        const libre = data.cabanas.find((c) => c.id === state.cabana.id);
+        if (!libre) {
+          return showAlert(`La cabaña ${state.cabana.nombre} no está disponible en esas fechas. Prueba con otras fechas o elige otra cabaña.`);
+        }
         Object.assign(state, { entrada, salida, personas, noches: data.noches });
-        renderCabanas(data.cabanas);
-        goto(2);
+        $('sumImg').innerHTML = `<img src="${state.cabana.imagen}" alt="${state.cabana.nombre}">`;
+        $('resumen').innerHTML = resumenHTML();
+        goto(3);
       } catch (e) { showAlert(e.message); }
-      finally { btn.disabled = false; btn.textContent = 'Buscar'; }
+      finally { btn.disabled = false; btn.textContent = 'Continuar'; }
     });
 
-    function renderCabanas(cabanas) {
-      $('paso2sub').textContent =
-        `${fmtFecha(state.entrada)} → ${fmtFecha(state.salida)} · ${state.noches} noche(s) · ${state.personas} huésped(es)`;
-      if (!cabanas.length) {
-        $('cabGrid').innerHTML = `<div class="alert alert-info" style="grid-column:1/-1">
-          No hay cabañas disponibles para esas fechas y cantidad de huéspedes. Prueba con otras fechas o escríbenos por WhatsApp.</div>`;
-        return;
-      }
-      const preselect = new URLSearchParams(location.search).get('cabana');
-      $('cabGrid').innerHTML = cabanas.map((c) => `
-        <div class="cab" data-id="${c.id}">
-          <div class="cab-img"><span class="cab-tag">Hasta ${c.capacidad} personas</span><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
-          <div class="cab-body">
-            <h3>${c.nombre}</h3>
-            <p class="cab-desc">${c.descripcion || ''}</p>
-            <div class="chips">${PERKS.map((p) => `<span class="chip">${p}</span>`).join('')}</div>
-            <div class="cab-foot">
-              <div><div class="pn">${fmt(c.precio_noche)} / noche</div><div class="tot">${fmt(c.total)}</div><div class="pn">total ${state.noches} noche(s)</div></div>
-              <button class="btn btn-primary">Reservar</button>
-            </div>
-          </div>
-        </div>`).join('');
-
-      document.querySelectorAll('.cab').forEach((el) => {
-        const id = Number(el.dataset.id);
-        const c = cabanas.find((x) => x.id === id);
-        el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); selectCabana(c); });
-        el.addEventListener('click', () => selectCabana(c));
-      });
-
-      if (preselect) {
-        const match = cabanas.find((c) => c.slug === preselect);
-        if (match) selectCabana(match);
-      }
-    }
-
-    function selectCabana(c) {
-      state.cabana = c;
-      $('sumImg').innerHTML = `<img src="${c.imagen}" alt="${c.nombre}">`;
-      $('resumen').innerHTML = resumenHTML();
-      goto(3);
-    }
+    $('btnVolver1').addEventListener('click', () => { clearAlert(); goto(1); });
+    $('btnVolver2').addEventListener('click', () => { clearAlert(); goto(2); });
 
     function resumenHTML() {
       const c = state.cabana;
@@ -384,10 +410,7 @@
         <div class="row total"><span>Total</span><span>${fmt(c.precio_noche * state.noches)}</span></div>`;
     }
 
-    $('btnVolver1').addEventListener('click', () => { clearAlert(); goto(1); });
-    $('btnVolver2').addEventListener('click', () => { clearAlert(); goto(2); });
-
-    // Paso 3
+    // ----- Paso 3: confirmar -----
     $('btnConfirmar').addEventListener('click', async () => {
       clearAlert();
       const nombre = $('nombre').value.trim();
@@ -424,6 +447,9 @@
       goto(4);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Inicio
+    loadCabanas();
   </script>
 </body>
 </html>

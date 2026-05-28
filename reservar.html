@@ -106,13 +106,21 @@
     /* Cabaña cards */
     .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 22px; }
     .cab {
-      border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
-      transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column;
+      position: relative; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
+      transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s, border-color .3s;
+      display: flex; flex-direction: column; animation: cardIn .55s cubic-bezier(.2,.7,.2,1) backwards;
     }
-    .cab:hover { transform: translateY(-4px); box-shadow: 0 22px 46px -26px rgba(0,0,0,.35); }
-    .cab.selected { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(184,92,56,.18); }
-    .cab-img { aspect-ratio: 16/11; position: relative; background: #ddd; }
-    .cab-img img { width: 100%; height: 100%; object-fit: cover; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(26px) scale(.97); } }
+    .cab:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -24px rgba(0,0,0,.4); }
+    .cab.selected { border-color: var(--terra); box-shadow: 0 0 0 3px rgba(184,92,56,.22), 0 26px 50px -24px rgba(0,0,0,.4); }
+    .cab.selected::after { content: '✓'; position: absolute; top: 12px; right: 12px; z-index: 3;
+      width: 30px; height: 30px; border-radius: 50%; background: var(--terra); color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(184,92,56,.5); animation: pop .3s ease; }
+    @keyframes pop { from { transform: scale(0); } 60% { transform: scale(1.25); } }
+    .cab-img { aspect-ratio: 16/11; position: relative; background: #ddd; overflow: hidden; }
+    .cab-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .cab:hover .cab-img img { transform: scale(1.07); }
     .cab-tag { position: absolute; top: 12px; left: 12px; background: rgba(31,58,43,.85); color: white;
       font-size: .72rem; padding: 5px 12px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(4px); }
     .cab-body { padding: 18px 20px; display: flex; flex-direction: column; flex: 1; }
@@ -173,6 +181,35 @@
     .code-box { display: inline-block; background: var(--green-dark); color: var(--sand); font-weight: 700;
       letter-spacing: 2px; padding: 11px 26px; border-radius: 10px; font-size: 1.25rem; margin: 14px 0; }
     .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 24px; }
+
+    /* Decoración del header */
+    .head { overflow: hidden; }
+    .head .container { position: relative; z-index: 2; }
+    .head::before, .head::after { content: ''; position: absolute; border-radius: 50%; filter: blur(46px); opacity: .35; z-index: 1; }
+    .head::before { width: 220px; height: 220px; background: var(--sand); top: -50px; left: -40px; animation: float1 9s ease-in-out infinite; }
+    .head::after { width: 280px; height: 280px; background: var(--green-light); bottom: -90px; right: -50px; animation: float2 11s ease-in-out infinite; }
+    @keyframes float1 { 50% { transform: translate(30px, 20px); } }
+    @keyframes float2 { 50% { transform: translate(-26px, -18px); } }
+
+    /* Pulso del paso activo */
+    .step.active .num { box-shadow: 0 0 0 0 rgba(184,92,56,.5); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(184,92,56,.5); } 70% { box-shadow: 0 0 0 9px rgba(184,92,56,0); } 100% { box-shadow: 0 0 0 0 rgba(184,92,56,0); } }
+
+    /* Botón con brillo */
+    .btn-primary { position: relative; overflow: hidden; }
+    .btn-primary::after { content: ''; position: absolute; top: 0; left: -120%; width: 80%; height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); }
+    .btn-primary:hover::after { left: 130%; transition: left .7s ease; }
+
+    /* Checkmark animado de éxito */
+    .success-icon svg { width: 78px; height: 78px; }
+    .success-icon circle { stroke: #fff; stroke-width: 3; fill: none; stroke-dasharray: 151; stroke-dashoffset: 151; animation: draw .6s ease forwards; }
+    .success-icon path { stroke: #fff; stroke-width: 5; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 48; stroke-dashoffset: 48; animation: draw .45s .5s ease forwards; }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    /* Confeti */
+    .confetti { position: fixed; top: -12px; width: 9px; height: 15px; border-radius: 2px; z-index: 999; pointer-events: none; animation: confettiFall linear forwards; }
+    @keyframes confettiFall { to { transform: translateY(106vh) rotate(720deg); opacity: .2; } }
   </style>
 </head>
 <body>
@@ -291,7 +328,7 @@
 
       <!-- PASO 4: Éxito -->
       <section class="card hidden center" id="paso4">
-        <div class="success-icon">✓</div>
+        <div class="success-icon"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-16"/></svg></div>
         <h2 class="card-title">¡Solicitud enviada!</h2>
         <p class="muted">Tu reserva quedó registrada como <b>pendiente</b>. Para confirmarla y coordinar el abono, escríbenos por WhatsApp con tu código.</p>
         <div class="code-box" id="codigoBox"></div>
@@ -355,7 +392,8 @@
             </div>
           </div>`).join('');
 
-        document.querySelectorAll('.cab').forEach((el) => {
+        document.querySelectorAll('.cab').forEach((el, i) => {
+          el.style.animationDelay = (i * 0.08) + 's';
           const id = Number(el.dataset.id);
           const c = cabanas.find((x) => x.id === id);
           el.querySelector('button').addEventListener('click', (e) => { e.stopPropagation(); pickCabana(c); });
@@ -487,6 +525,21 @@
       $('waBtn').href = `https://wa.me/${WHATSAPP}?text=${msg}`;
       goto(4);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      lanzarConfeti();
+    }
+
+    function lanzarConfeti() {
+      const colors = ['#b85c38', '#355e3b', '#d9c9a8', '#6b8e4e', '#e0b54d'];
+      for (let i = 0; i < 90; i++) {
+        const d = document.createElement('div');
+        d.className = 'confetti';
+        d.style.left = Math.random() * 100 + 'vw';
+        d.style.background = colors[i % colors.length];
+        d.style.animationDuration = (2.4 + Math.random() * 1.6) + 's';
+        d.style.animationDelay = (Math.random() * 0.5) + 's';
+        document.body.appendChild(d);
+        setTimeout(() => d.remove(), 4500);
+      }
     }
 
     // Inicio

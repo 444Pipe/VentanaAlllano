@@ -477,6 +477,26 @@
     .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.9s ease, transform 0.9s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
+    /* Scroll progress bar */
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
+      background: linear-gradient(90deg, var(--terra), var(--sand)); transition: width 0.1s linear; }
+
+    /* Reveal en hijos (escalonado) */
+    .stagger > * { opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+
+    /* Hero: fade/parallax al hacer scroll */
+    .hero-content, .hero-scroll { will-change: transform, opacity; }
+
+    /* Hover de imágenes/tarjetas extra */
+    .tarifa-card, .areas-card, .about-feature-icon, .cabana-gallery img { will-change: transform; }
+    .about-feature { transition: transform 0.3s ease; }
+    .about-feature:hover { transform: translateX(4px); }
+    .about-feature:hover .about-feature-icon { transform: scale(1.08) rotate(-4deg); transition: transform 0.3s ease; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .stagger > * { transition: none; opacity: 1; transform: none; }
+    }
+
     /* ---------- RESPONSIVE ---------- */
     @media (max-width: 968px) {
       .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); flex-direction: column; padding: 24px; gap: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -523,6 +543,7 @@
   </style>
 </head>
 <body>
+  <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- NAV -->
   <nav class="nav" id="nav">
@@ -572,7 +593,7 @@
           <h2>Un lugar de <em>ensueño</em> en el corazón del Meta</h2>
           <p>Somos Ecocabañas Ventana al Llano, un eco-hotel ubicado en Restrepo donde la naturaleza, el descanso y el buen comer se unen para regalarte una experiencia inolvidable.</p>
           <p>Sal de la rutina, respira aire puro y disfruta de cabañas tipo glamping, piscina infinita con vista panorámica y un restaurante para los paladares más exigentes.</p>
-          <div class="about-features">
+          <div class="about-features stagger">
             <div class="about-feature">
               <div class="about-feature-icon"><i data-lucide="leaf"></i></div>
               <div><h4>Eco-hotel</h4><p>En armonía con la naturaleza</p></div>
@@ -594,7 +615,7 @@
         <div class="about-image reveal">
           <img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009813/ventana-al-llano/piscina-infinita/SaveClip_App_502589153_17977269449850600_4443264619970459978_n.jpg" alt="Vista de Ventana al Llano">
           <div class="about-badge">
-            <strong>15K+</strong>
+            <strong class="counter" data-target="15" data-suffix="K+">0</strong>
             <span>Huéspedes felices</span>
           </div>
         </div>
@@ -687,7 +708,7 @@
         <h2>Donde el agua se <em>funde</em> con el horizonte</h2>
         <p>Nuestra piscina infinita es uno de los espacios más fotografiados del lugar. Y por una buena razón.</p>
       </div>
-      <div class="pool-grid reveal">
+      <div class="pool-grid reveal stagger">
         <div><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009814/ventana-al-llano/piscina-infinita/SaveClip_App_503445001_17977269494850600_1021897473506415542_n.jpg" alt="Piscina infinita"></div>
         <div><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009812/ventana-al-llano/piscina-infinita/SaveClip_App_499039082_17977269467850600_1554016418580416870_n.jpg" alt="Piscina infinita detalle"></div>
         <div><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009815/ventana-al-llano/piscina-infinita/SaveClip_App_503445002_17977269476850600_5816440687376213529_n.jpg" alt="Piscina infinita amanecer"></div>
@@ -778,7 +799,7 @@
         <h2>El llano en cada <em>detalle</em></h2>
         <p>Una mirada al lugar que pronto querrás visitar.</p>
       </div>
-      <div class="gallery-grid reveal">
+      <div class="gallery-grid reveal stagger">
         <div class="big"><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009785/ventana-al-llano/cabana-chiguiro/SaveClip_App_650969980_18093296381019477_2660021239446078146_n.jpg" alt="Cabaña Chigüiro"></div>
         <div><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009793/ventana-al-llano/cabana-mico-glamping/SaveClip_App_652526785_18098949289760832_9201503867486485467_n.jpg" alt="Glamping"></div>
         <div><img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009804/ventana-al-llano/cabana-perezoso/SaveClip_App_652525191_18149381797476076_7094192785623621262_n.jpg" alt="Perezoso"></div>
@@ -887,11 +908,29 @@
   </script>
 
   <script>
-    // Nav scroll effect
+    // Nav scroll + barra de progreso + parallax del hero
     const nav = document.getElementById('nav');
+    const progress = document.getElementById('scrollProgress');
+    const heroContent = document.querySelector('.hero-content');
+    const heroScroll = document.querySelector('.hero-scroll');
+    let ticking = false;
+    function onScroll() {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 50);
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+      // Hero: se desvanece y sube suavemente al hacer scroll
+      if (heroContent && y < window.innerHeight) {
+        const k = y / window.innerHeight;
+        heroContent.style.transform = `translateY(${y * 0.25}px)`;
+        heroContent.style.opacity = String(1 - k * 1.3);
+        if (heroScroll) heroScroll.style.opacity = String(1 - k * 2.2);
+      }
+      ticking = false;
+    }
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-    });
+      if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+    }, { passive: true });
 
     // Mobile menu
     const menuToggle = document.getElementById('menuToggle');
@@ -899,11 +938,37 @@
     menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
     document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-    // Reveal on scroll
+    // Reveal on scroll (con escalonado y contadores)
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        if (el.classList.contains('stagger')) {
+          [...el.children].forEach((ch, i) => { ch.style.transitionDelay = (i * 0.09) + 's'; });
+        }
+        el.classList.add('visible');
+        el.querySelectorAll && el.querySelectorAll('.counter').forEach(animateCounter);
+        if (el.classList.contains('counter')) animateCounter(el);
+        observer.unobserve(el);
+      });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal, .stagger, .counter').forEach(el => observer.observe(el));
+
+    // Contador animado
+    function animateCounter(el) {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
+      const target = parseFloat(el.dataset.target || '0');
+      const suffix = el.dataset.suffix || '';
+      const dur = 1400; const t0 = performance.now();
+      function step(t) {
+        const p = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
 
     // Video hero: empieza en segundo 16, loop manual al mismo punto
     const heroVideo = document.getElementById('heroVideo');

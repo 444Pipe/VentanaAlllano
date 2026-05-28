@@ -104,7 +104,7 @@
     .card-sub { color: var(--muted); font-size: .93rem; margin-bottom: 24px; }
 
     /* Cabaña cards */
-    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; }
+    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 22px; }
     .cab {
       border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
       transition: transform .25s, box-shadow .25s; display: flex; flex-direction: column;
@@ -135,6 +135,17 @@
     /* Two-column step datos */
     .cols { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
     @media (max-width: 880px) { .cols { grid-template-columns: 1fr; } }
+    @media (max-width: 560px) {
+      .head { padding: 44px 0 120px; }
+      .card { padding: 22px 18px; }
+      .topbar .brand small { display: none; }
+      .topbar .brand b { font-size: 1.05rem; }
+      .daterow { grid-template-columns: 1fr; }
+      .picked { flex-wrap: wrap; }
+      .picked a { margin-left: 0; }
+      .steps { font-size: .78rem; gap: 4px; }
+      .step-sep { width: 14px; }
+    }
     .summary-card { position: sticky; top: 90px; }
     .summary-img { aspect-ratio: 16/10; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
     .summary-img img { width: 100%; height: 100%; object-fit: cover; }
@@ -239,7 +250,7 @@
         <p class="card-sub">Solo necesitamos tus datos para confirmar la solicitud.</p>
         <div class="cols">
           <div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px;">
               <div>
                 <label for="nombre">Nombre completo *</label>
                 <input type="text" id="nombre" placeholder="Ej: Ana Martínez">

@@ -148,7 +148,19 @@
       .mobile-bar b { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
       .hamb { background: none; border: none; color: white; cursor: pointer; padding: 4px; }
     }
-  </style>
+    @media (max-width: 560px) {
+      .content { padding: 18px 14px 60px; }
+      .page-title { font-size: 1.55rem; }
+      .stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .stat { padding: 14px 16px; }
+      .stat .v { font-size: 1.7rem; }
+      .panel { padding: 16px; }
+      .chart-card { padding: 16px; }
+      .chart-wrap { height: 220px; }
+      .login-card { padding: 32px 22px; }
+      .filters .fg { flex: 1; min-width: 100%; }
+      .filters .btn { flex: 1; }
+    }
 </head>
 <body>
   <!-- LOGIN -->

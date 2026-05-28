@@ -13,7 +13,7 @@ const SEED_CABANAS = [
     descripcion: 'Espaciosa y acogedora, ideal para familias o grupos. Acabados en madera y vista al jardín.',
     capacidad: 6,
     precio_noche: 300000,
-    imagen: 'statics/cabana-chiguiro/SaveClip.App_649228377_18009669110835757_978800948885697982_n.jpg',
+    imagen: 'https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009784/ventana-al-llano/cabana-chiguiro/SaveClip_App_649228377_18009669110835757_978800948885697982_n.jpg',
   },
   {
     slug: 'el-mico',
@@ -21,7 +21,7 @@ const SEED_CABANAS = [
     descripcion: 'Nuestro glamping insignia. Experiencia íntima para parejas, rodeada de naturaleza.',
     capacidad: 2,
     precio_noche: 320000,
-    imagen: 'statics/cabana-mico-glamping/SaveClip.App_642556274_18096203750292440_2958544728974809294_n.jpg',
+    imagen: 'https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009791/ventana-al-llano/cabana-mico-glamping/SaveClip_App_642556274_18096203750292440_2958544728974809294_n.jpg',
   },
   {
     slug: 'el-perezoso',
@@ -29,7 +29,7 @@ const SEED_CABANAS = [
     descripcion: 'Tranquilidad pura: hamacas, vista al bosque y silencio. Para descansar sin afanes.',
     capacidad: 4,
     precio_noche: 300000,
-    imagen: 'statics/cabana-perezoso/SaveClip.App_650621249_18082119707588204_1388314393573503417_n.jpg',
+    imagen: 'https://res.cloudinary.com/dxfgqsp8y/image/upload/v1780009802/ventana-al-llano/cabana-perezoso/SaveClip_App_650621249_18082119707588204_1388314393573503417_n.jpg',
   },
 ];
 
@@ -131,6 +131,11 @@ function makePgBackend() {
             [c.slug, c.nombre, c.descripcion, c.capacidad, c.precio_noche, c.imagen]
           );
         }
+      }
+
+      // Migración: re-apuntar imágenes antiguas (statics/...) a Cloudinary
+      for (const c of SEED_CABANAS) {
+        await q(`UPDATE cabanas SET imagen = $2 WHERE slug = $1 AND imagen LIKE 'statics/%'`, [c.slug, c.imagen]);
       }
     },
 

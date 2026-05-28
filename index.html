@@ -17,8 +17,7 @@
     }
     window.addEventListener('beforeunload', () => window.scrollTo(0, 0));
   </script>
-  <link rel="preload" as="image" href="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/piscina-infinita/SaveClip_App_499039082_17977269467850600_1554016418580416870_n.jpg" fetchpriority="high">
-  <link rel="preload" as="video" href="https://res.cloudinary.com/dxfgqsp8y/video/upload/f_auto,q_auto/v1780009967/ventana-al-llano/Ventanaherofondo-web.mp4" type="video/mp4" fetchpriority="high">
+  <link rel="preload" as="video" href="https://res.cloudinary.com/dxfgqsp8y/video/upload/so_15,q_auto/v1780009967/ventana-al-llano/Ventanaherofondo-web.mp4" type="video/mp4" fetchpriority="high">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -118,9 +117,6 @@
       overflow: hidden; display: flex; align-items: center; justify-content: center;
       color: white; text-align: center;
       background-color: var(--green-dark);
-      background-image: url('https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/piscina-infinita/SaveClip_App_499039082_17977269467850600_1554016418580416870_n.jpg');
-      background-size: cover;
-      background-position: center;
     }
     .hero-video {
       position: absolute; inset: 0; width: 100%; height: 100%;
@@ -568,8 +564,8 @@
 
   <!-- HERO -->
   <section class="hero">
-    <video class="hero-video" id="heroVideo" autoplay muted playsinline preload="auto" fetchpriority="high" poster="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/piscina-infinita/SaveClip_App_499039082_17977269467850600_1554016418580416870_n.jpg">
-      <source src="https://res.cloudinary.com/dxfgqsp8y/video/upload/f_auto,q_auto/v1780009967/ventana-al-llano/Ventanaherofondo-web.mp4#t=15" type="video/mp4">
+    <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="auto" fetchpriority="high">
+      <source src="https://res.cloudinary.com/dxfgqsp8y/video/upload/so_15,q_auto/v1780009967/ventana-al-llano/Ventanaherofondo-web.mp4" type="video/mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -970,21 +966,10 @@
       requestAnimationFrame(step);
     }
 
-    // Video hero: empieza en segundo 16, loop manual al mismo punto
+    // Video hero: ya viene recortado desde el segundo 15 (so_15) + loop nativo
     const heroVideo = document.getElementById('heroVideo');
-    const HERO_START = 15;
     if (heroVideo) {
       const show = () => heroVideo.classList.add('ready');
-      const ensureStart = () => {
-        if (heroVideo.currentTime < HERO_START) {
-          try { heroVideo.currentTime = HERO_START; } catch (e) {}
-        }
-      };
-      heroVideo.addEventListener('loadedmetadata', ensureStart, { once: true });
-      heroVideo.addEventListener('ended', () => {
-        heroVideo.currentTime = HERO_START;
-        heroVideo.play();
-      });
       if (heroVideo.readyState >= 3) show();
       else heroVideo.addEventListener('canplay', show, { once: true });
       heroVideo.play().catch(() => {

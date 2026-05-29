@@ -507,6 +507,18 @@
     .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 200;
       background: linear-gradient(90deg, var(--terra), var(--sand)); transition: width 0.1s linear; }
 
+    /* Preloader / pantalla de carga */
+    .preloader { position: fixed; inset: 0; z-index: 9999; background: linear-gradient(140deg, var(--green-dark), var(--green-mid));
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+      transition: opacity 0.6s ease, visibility 0.6s ease; }
+    .preloader.hidden { opacity: 0; visibility: hidden; }
+    .pre-logo { width: 150px; max-width: 55vw; height: auto; background: rgba(255,255,255,0.95); border-radius: 14px;
+      padding: 12px 16px; box-shadow: 0 18px 50px -16px rgba(0,0,0,0.5); animation: prePulse 1.6s ease-in-out infinite; }
+    @keyframes prePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    .pre-bar { width: 220px; max-width: 62vw; height: 5px; background: rgba(255,255,255,0.22); border-radius: 50px; overflow: hidden; }
+    .pre-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--sand), var(--terra)); border-radius: 50px; transition: width 0.35s ease; }
+    .pre-text { color: rgba(255,255,255,0.75); font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; }
+
     /* Reveal en hijos (escalonado) */
     .stagger > * { opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .stagger.visible > * { opacity: 1; transform: translateY(0); }
@@ -569,6 +581,28 @@
   </style>
 </head>
 <body>
+  <!-- Preloader -->
+  <div class="preloader" id="preloader">
+    <img class="pre-logo" src="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/logo_png.png" alt="Ventana al Llano">
+    <div class="pre-bar"><div class="pre-bar-fill" id="preFill"></div></div>
+    <div class="pre-text">Cargando...</div>
+  </div>
+  <script>
+    (function () {
+      var fill = document.getElementById('preFill'), pre = document.getElementById('preloader'), p = 0;
+      document.body.style.overflow = 'hidden';
+      var t = setInterval(function () { p = Math.min(p + Math.random() * 12, 90); fill.style.width = p + '%'; }, 200);
+      function hide() {
+        if (pre.classList.contains('hidden')) return;
+        clearInterval(t); fill.style.width = '100%'; pre.classList.add('hidden');
+        document.body.style.overflow = '';
+        setTimeout(function () { if (pre && pre.parentNode) pre.parentNode.removeChild(pre); }, 700);
+      }
+      window.addEventListener('load', function () { setTimeout(hide, 300); });
+      setTimeout(hide, 8000); // respaldo por si algo tarda
+    })();
+  </script>
+
   <div class="scroll-progress" id="scrollProgress"></div>
 
   <!-- NAV -->

@@ -100,10 +100,11 @@
     .btn-primary:hover { background: #a04e2c; transform: translateY(-1px); }
     .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid var(--line); flex: 1; }
     .btn-ghost:hover { background: #f0ead7; border-color: var(--green-mid); }
-    .btn-share { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 50%; border: 1.5px solid var(--line);
-      background: #fff; color: var(--green-mid); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all .2s; }
+    .btn-share { flex: 0 0 auto; padding: 8px 15px; border-radius: 50px; border: 1.5px solid var(--line);
+      background: #fff; color: var(--green-mid); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+      font-family: inherit; font-size: .8rem; font-weight: 600; transition: all .2s; }
     .btn-share:hover { background: #f0ead7; border-color: var(--green-mid); transform: translateY(-1px); }
-    .btn-share svg { width: 18px; height: 18px; }
+    .btn-share svg { width: 15px; height: 15px; }
 
     /* Menú compartir */
     .share-card { background: #fff; border-radius: 18px; padding: 26px 24px; max-width: 400px; width: 100%; position: relative;
@@ -202,7 +203,7 @@
         <div class="modal-foot">
           <div class="price" id="mPrice"></div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <button class="btn-share" id="mShare" aria-label="Compartir" title="Compartir"><i data-lucide="share-2"></i></button>
+            <button class="btn-share" id="mShare" title="Compartir"><i data-lucide="share-2"></i> Compartir</button>
             <a class="btn btn-primary" id="mReservar">Reservar esta cabaña</a>
           </div>
         </div>
@@ -329,7 +330,7 @@
             <div class="incluye">${chips.map((a) => `<span><i data-lucide="${a.i}"></i>${a.t}</span>`).join('')}</div>
             <div class="price-row">
               <span class="price">${fmt(c.precio_noche)}</span><span class="per">/ noche</span>
-              <button class="btn-share" data-share="${c.id}" style="margin-left:auto;" aria-label="Compartir" title="Compartir"><i data-lucide="share-2"></i></button>
+              <button class="btn-share" data-share="${c.id}" style="margin-left:auto;" title="Compartir"><i data-lucide="share-2"></i> Compartir</button>
             </div>
             <div class="cab-actions">
               <button class="btn btn-ghost" data-detalle="${c.id}">Ver detalles</button>

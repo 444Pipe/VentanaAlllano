@@ -597,17 +597,33 @@
   </div>
   <script>
     (function () {
-      var fill = document.getElementById('preFill'), pre = document.getElementById('preloader'), p = 0;
+      var fill = document.getElementById('preFill'), pre = document.getElementById('preloader');
       document.body.style.overflow = 'hidden';
-      var t = setInterval(function () { p = Math.min(p + Math.random() * 12, 90); fill.style.width = p + '%'; }, 200);
       function hide() {
         if (pre.classList.contains('hidden')) return;
-        clearInterval(t); fill.style.width = '100%'; pre.classList.add('hidden');
+        fill.style.width = '100%'; pre.classList.add('hidden');
         document.body.style.overflow = '';
-        setTimeout(function () { if (pre && pre.parentNode) pre.parentNode.removeChild(pre); }, 700);
+        setTimeout(function () { if (pre && pre.parentNode) pre.parentNode.removeChild(pre); }, 600);
       }
-      window.addEventListener('load', function () { setTimeout(hide, 300); });
-      setTimeout(hide, 8000); // respaldo por si algo tarda
+      // Oculta el preloader cuando se haya cargado el 50% de las imágenes
+      document.addEventListener('DOMContentLoaded', function () {
+        var imgs = [].slice.call(document.images).filter(function (i) {
+          return i.loading !== 'lazy' && !pre.contains(i);
+        });
+        var total = imgs.length || 1, loaded = 0;
+        function bump() {
+          loaded++;
+          fill.style.width = Math.min(100, Math.round((loaded / total) * 100)) + '%';
+          if (loaded / total >= 0.5) hide();
+        }
+        if (!imgs.length) { hide(); return; }
+        imgs.forEach(function (img) {
+          if (img.complete) bump();
+          else { img.addEventListener('load', bump); img.addEventListener('error', bump); }
+        });
+      });
+      window.addEventListener('load', hide); // respaldo: carga completa
+      setTimeout(hide, 8000);                // respaldo: tiempo máximo
     })();
   </script>
 

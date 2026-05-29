@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cabañas · Ecocabañas Ventana al Llano</title>
+  <meta name="description" content="Conoce nuestras cabañas: El Chigüiro, El Mico (glamping) y El Perezoso. Precios, detalles y reservas." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/logo_png.png">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green-dark: #1f3a2b; --green-mid: #355e3b; --green-light: #6b8e4e;
+      --cream: #f4efe6; --sand: #d9c9a8; --terra: #b85c38; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e6e0d3;
+    }
+    body { font-family: 'Inter', sans-serif; color: var(--ink); background: var(--cream); line-height: 1.6; }
+    h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 22px; }
+
+    /* Top bar */
+    .topbar { background: var(--green-dark); color: white; padding: 14px 0; position: sticky; top: 0; z-index: 50; }
+    .topbar .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; color: white; }
+    .brand img { height: 40px; width: auto; background: rgba(255,255,255,.92); border-radius: 7px; padding: 4px 7px; }
+    .brand small { display: block; font-size: .66rem; letter-spacing: 2.5px; text-transform: uppercase; opacity: .8; }
+    .brand b { font-family: 'Cormorant Garamond', serif; font-size: 1.18rem; font-weight: 600; }
+    .back-link { color: var(--sand); font-size: .9rem; font-weight: 500; }
+    .back-link:hover { color: white; }
+
+    /* Hero band */
+    .head {
+      color: white; padding: 56px 0 120px; text-align: center; position: relative; overflow: hidden;
+      background: linear-gradient(rgba(31,58,43,.62), rgba(31,58,43,.8)),
+        url('https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/cabana-chiguiro/SaveClip_App_649228377_18009669110835757_978800948885697982_n.jpg') center/cover;
+    }
+    .head h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); }
+    .head h1 em { font-style: italic; color: var(--sand); }
+    .head p { opacity: .92; margin-top: 10px; font-weight: 300; font-size: 1.05rem; }
+
+    .wrap { margin-top: -80px; padding-bottom: 80px; position: relative; z-index: 2; }
+
+    /* Cards */
+    .cab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+    .cab {
+      position: relative; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
+      transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; display: flex; flex-direction: column;
+      animation: cardIn .55s cubic-bezier(.2,.7,.2,1) backwards;
+    }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(26px) scale(.97); } }
+    .cab:hover { transform: translateY(-6px); box-shadow: 0 26px 50px -24px rgba(0,0,0,.4); }
+    .cab-img { aspect-ratio: 16/11; position: relative; overflow: hidden; background: #ddd; }
+    .cab-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+    .cab:hover .cab-img img { transform: scale(1.07); }
+    .cab-tag { position: absolute; top: 12px; left: 12px; background: rgba(31,58,43,.85); color: white;
+      font-size: .72rem; padding: 5px 12px; border-radius: 50px; font-weight: 600; backdrop-filter: blur(4px); }
+    .cab-body { padding: 20px 22px; display: flex; flex-direction: column; flex: 1; }
+    .cab-body h3 { font-size: 1.55rem; color: var(--green-dark); }
+    .cab-desc { font-size: .9rem; color: var(--muted); margin: 8px 0 16px; flex: 1; }
+    .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
+    .price-row .price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--terra); font-weight: 600; line-height: 1; }
+    .price-row .per { color: var(--muted); font-size: .82rem; }
+    .cab-actions { display: flex; gap: 10px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: 50px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 600; font-size: .92rem; transition: all .25s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--terra); color: white; flex: 1; }
+    .btn-primary:hover { background: #a04e2c; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid var(--line); flex: 1; }
+    .btn-ghost:hover { background: #f0ead7; border-color: var(--green-mid); }
+
+    .loading, .error { text-align: center; color: var(--muted); padding: 40px; grid-column: 1/-1; }
+
+    /* Modal detalles */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(20,30,22,.6); backdrop-filter: blur(3px);
+      display: none; align-items: center; justify-content: center; padding: 20px; z-index: 100; }
+    .modal-overlay.open { display: flex; animation: fade .3s ease; }
+    @keyframes fade { from { opacity: 0; } }
+    .modal { background: #fff; border-radius: 18px; max-width: 720px; width: 100%; max-height: 92vh; overflow: hidden;
+      display: flex; flex-direction: column; animation: modalIn .35s cubic-bezier(.2,.7,.2,1); }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(.97); } }
+    .modal-img { position: relative; aspect-ratio: 16/9; background: #ddd; flex-shrink: 0; }
+    .modal-img img { width: 100%; height: 100%; object-fit: cover; }
+    .modal-close { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(0,0,0,.5); color: #fff; border: none; cursor: pointer; font-size: 1.3rem; line-height: 1;
+      display: flex; align-items: center; justify-content: center; }
+    .modal-close:hover { background: rgba(0,0,0,.75); }
+    .modal-body { padding: 26px 28px; overflow-y: auto; }
+    .modal-body h2 { font-size: 1.9rem; color: var(--green-dark); }
+    .modal-body h2 em { font-style: italic; color: var(--terra); }
+    .modal-cap { color: var(--muted); font-size: .9rem; margin: 4px 0 14px; }
+    .modal-body p.desc { color: #444; margin-bottom: 18px; }
+    .amen { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .amen span { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .82rem; padding: 6px 14px; border-radius: 50px; }
+    .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+      border-top: 1px solid var(--line); padding-top: 18px; }
+    .modal-foot .price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--terra); font-weight: 600; }
+    .modal-foot .price small { font-family: 'Inter', sans-serif; font-size: .82rem; color: var(--muted); font-weight: 400; }
+    .modal-foot .btn { padding: 13px 28px; }
+
+    @media (max-width: 560px) {
+      .head { padding: 44px 0 110px; }
+      .cab-actions { flex-direction: column; }
+      .modal-foot { justify-content: center; text-align: center; }
+      .modal-foot .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <img src="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/logo_png.png" alt="Ventana al Llano">
+        <span><b>Ventana al Llano</b><small>Cabañas · Restrepo, Meta</small></span>
+      </a>
+      <a href="index.html" class="back-link">← Volver al inicio</a>
+    </div>
+  </div>
+
+  <div class="head">
+    <div class="container">
+      <h1>Nuestras <em>cabañas</em></h1>
+      <p>Tres refugios únicos para desconectarte. Mira los detalles y reserva el tuyo.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="container">
+      <div class="cab-grid" id="cabGrid"><div class="loading">Cargando cabañas...</div></div>
+    </div>
+  </div>
+
+  <!-- Modal detalles -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <div class="modal-img">
+        <img id="mImg" src="" alt="">
+        <button class="modal-close" id="mClose" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <h2 id="mNombre"></h2>
+        <div class="modal-cap" id="mCap"></div>
+        <p class="desc" id="mDesc"></p>
+        <div class="amen" id="mAmen"></div>
+        <div class="modal-foot">
+          <div class="price" id="mPrice"></div>
+          <a class="btn btn-primary" id="mReservar">Reservar esta cabaña</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fmt = (n) => '$' + Number(n || 0).toLocaleString('es-CO');
+    const $ = (id) => document.getElementById(id);
+
+    // Amenidades por cabaña (complementan los datos del servidor)
+    const AMENIDADES = {
+      'el-chiguiro': ['🛏 Hasta 6 personas', '🌳 Vista al jardín', '🚿 Baño privado', '📶 WiFi', '🌡️ Clima cálido'],
+      'el-mico': ['💑 Ideal para parejas', '✨ Estilo glamping', '🌃 Cielo estrellado', '🛁 Jacuzzi opcional', '🌸 Decoración romántica'],
+      'el-perezoso': ['🛌 Hasta 4 personas', '🌿 Vista al bosque', '🪵 Acabados rústicos', '☕ Cocineta', '🪟 Ventanal panorámico'],
+    };
+
+    let CABANAS = [];
+
+    async function load() {
+      try {
+        CABANAS = await fetch('/api/cabanas').then((r) => r.json());
+        if (!Array.isArray(CABANAS) || !CABANAS.length) {
+          $('cabGrid').innerHTML = '<div class="error">No hay cabañas disponibles por ahora.</div>';
+          return;
+        }
+        render();
+      } catch (e) {
+        $('cabGrid').innerHTML = '<div class="error">No se pudieron cargar las cabañas. Intenta recargar la página.</div>';
+      }
+    }
+
+    function render() {
+      $('cabGrid').innerHTML = CABANAS.map((c) => `
+        <div class="cab" style="animation-delay:${CABANAS.indexOf(c) * 0.08}s">
+          <div class="cab-img"><span class="cab-tag">Hasta ${c.capacidad} personas</span><img src="${c.imagen}" alt="${c.nombre}" loading="lazy"></div>
+          <div class="cab-body">
+            <h3>${c.nombre}</h3>
+            <p class="cab-desc">${c.descripcion || ''}</p>
+            <div class="price-row"><span class="price">${fmt(c.precio_noche)}</span><span class="per">/ noche</span></div>
+            <div class="cab-actions">
+              <button class="btn btn-ghost" data-detalle="${c.id}">Detalles</button>
+              <a class="btn btn-primary" href="reservar.html?cabana=${c.slug}">Reservar</a>
+            </div>
+          </div>
+        </div>`).join('');
+      document.querySelectorAll('[data-detalle]').forEach((b) =>
+        b.addEventListener('click', () => abrirModal(Number(b.dataset.detalle))));
+    }
+
+    function abrirModal(id) {
+      const c = CABANAS.find((x) => x.id === id);
+      if (!c) return;
+      $('mImg').src = c.imagen; $('mImg').alt = c.nombre;
+      $('mNombre').textContent = c.nombre;
+      $('mCap').textContent = `Hasta ${c.capacidad} personas`;
+      $('mDesc').textContent = c.descripcion || '';
+      $('mAmen').innerHTML = (AMENIDADES[c.slug] || []).map((a) => `<span>${a}</span>`).join('');
+      $('mPrice').innerHTML = `${fmt(c.precio_noche)} <small>/ noche</small>`;
+      $('mReservar').href = `reservar.html?cabana=${c.slug}`;
+      $('modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarModal() { $('modal').classList.remove('open'); document.body.style.overflow = ''; }
+    $('mClose').addEventListener('click', cerrarModal);
+    $('modal').addEventListener('click', (e) => { if (e.target === $('modal')) cerrarModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarModal(); });
+
+    load();
+  </script>
+</body>
+</html>

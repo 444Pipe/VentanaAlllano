@@ -75,7 +75,10 @@
     .cab-body h3 { font-size: 1.6rem; color: var(--green-dark); }
     .cab-desc { font-size: .9rem; color: var(--muted); margin: 8px 0 14px; flex: 1; }
     .incluye { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-    .incluye span { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .76rem; padding: 4px 11px; border-radius: 50px; }
+    .incluye span { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .76rem; padding: 4px 11px; border-radius: 50px; display: inline-flex; align-items: center; gap: 5px; }
+    .incluye span svg { width: 14px; height: 14px; stroke-width: 2; color: var(--green-mid); }
+    .amen span svg { width: 15px; height: 15px; stroke-width: 2; color: var(--green-mid); }
+    .car-count svg { width: 13px; height: 13px; vertical-align: -2px; stroke-width: 2; }
     .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 16px; }
     .price-row .price { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; color: var(--terra); font-weight: 600; line-height: 1; }
     .price-row .per { color: var(--muted); font-size: .82rem; }
@@ -114,7 +117,7 @@
     .modal-body p.desc { color: #444; margin-bottom: 18px; }
     .modal-body h4 { font-size: 1rem; color: var(--green-dark); margin-bottom: 10px; font-family: 'Inter', sans-serif; font-weight: 700; }
     .amen { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-    .amen span { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .84rem; padding: 7px 14px; border-radius: 50px; }
+    .amen span { background: #f3efe5; border: 1px solid var(--line); color: var(--green-dark); font-size: .84rem; padding: 7px 14px; border-radius: 50px; display: inline-flex; align-items: center; gap: 6px; }
     .modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
       border-top: 1px solid var(--line); padding-top: 18px; }
     .modal-foot .price { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; color: var(--terra); font-weight: 600; }
@@ -178,6 +181,7 @@
     </div>
   </div>
 
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <script>
     const fmt = (n) => '$' + Number(n || 0).toLocaleString('es-CO');
     const $ = (id) => document.getElementById(id);
@@ -214,15 +218,27 @@
     const DETALLE = {
       'el-chiguiro': {
         contiene: 'Cabaña espaciosa en madera para hasta 6 personas, ideal para familias o grupos. Incluye camas cómodas, baño privado, ventilación para el clima cálido del llano, WiFi y acceso directo a las zonas verdes, la piscina infinita y el restaurante.',
-        incluye: ['🛏 Hasta 6 personas', '🚿 Baño privado', '🌳 Vista al jardín', '📶 WiFi', '🌡️ Clima cálido', '🅿️ Parqueadero', '🏊 Acceso a piscina'],
+        incluye: [
+          { i: 'bed-double', t: 'Hasta 6 personas' }, { i: 'shower-head', t: 'Baño privado' },
+          { i: 'trees', t: 'Vista al jardín' }, { i: 'wifi', t: 'WiFi' }, { i: 'thermometer-sun', t: 'Clima cálido' },
+          { i: 'square-parking', t: 'Parqueadero' }, { i: 'waves', t: 'Acceso a piscina' },
+        ],
       },
       'el-mico': {
         contiene: 'Nuestro glamping insignia, pensado para parejas. Una experiencia íntima rodeada de naturaleza, con decoración romántica, cielo estrellado y todas las comodidades de un hotel boutique. Opción de jacuzzi. Perfecto para aniversarios y escapadas en pareja.',
-        incluye: ['💑 Ideal para parejas', '✨ Estilo glamping', '🌃 Cielo estrellado', '🛁 Jacuzzi opcional', '🌸 Decoración romántica', '📶 WiFi', '🏊 Acceso a piscina'],
+        incluye: [
+          { i: 'heart', t: 'Ideal para parejas' }, { i: 'sparkles', t: 'Estilo glamping' },
+          { i: 'moon-star', t: 'Cielo estrellado' }, { i: 'bath', t: 'Jacuzzi opcional' },
+          { i: 'flower-2', t: 'Decoración romántica' }, { i: 'wifi', t: 'WiFi' }, { i: 'waves', t: 'Acceso a piscina' },
+        ],
       },
       'el-perezoso': {
         contiene: 'Refugio tranquilo para hasta 4 personas, con acabados rústicos, hamacas, cocineta y un ventanal panorámico hacia el bosque. Pensado para descansar al ritmo que tu cuerpo necesita, en medio del silencio y el verde.',
-        incluye: ['🛌 Hasta 4 personas', '🌿 Vista al bosque', '🪵 Acabados rústicos', '☕ Cocineta', '🪟 Ventanal panorámico', '📶 WiFi', '🏊 Acceso a piscina'],
+        incluye: [
+          { i: 'bed', t: 'Hasta 4 personas' }, { i: 'trees', t: 'Vista al bosque' },
+          { i: 'tree-pine', t: 'Acabados rústicos' }, { i: 'coffee', t: 'Cocineta' },
+          { i: 'mountain', t: 'Ventanal panorámico' }, { i: 'wifi', t: 'WiFi' }, { i: 'waves', t: 'Acceso a piscina' },
+        ],
       },
     };
 
@@ -265,13 +281,13 @@
         <div class="cab" style="animation-delay:${idx * 0.08}s">
           <div class="carousel" data-car>
             <span class="cab-tag">Hasta ${c.capacidad} personas</span>
-            <span class="car-count">📷 ${fotos.length}</span>
+            <span class="car-count"><i data-lucide="camera"></i> ${fotos.length}</span>
             ${carouselHTML(fotos, c.nombre)}
           </div>
           <div class="cab-body">
             <h3>${c.nombre}</h3>
             <p class="cab-desc">${desc}</p>
-            <div class="incluye">${chips.map((a) => `<span>${a}</span>`).join('')}</div>
+            <div class="incluye">${chips.map((a) => `<span><i data-lucide="${a.i}"></i>${a.t}</span>`).join('')}</div>
             <div class="price-row"><span class="price">${fmt(c.precio_noche)}</span><span class="per">/ noche</span></div>
             <div class="cab-actions">
               <button class="btn btn-ghost" data-detalle="${c.id}">Ver detalles</button>
@@ -284,6 +300,7 @@
       document.querySelectorAll('[data-car]').forEach((el) => initCarousel(el));
       document.querySelectorAll('[data-detalle]').forEach((b) =>
         b.addEventListener('click', () => abrirModal(Number(b.dataset.detalle))));
+      if (window.lucide) lucide.createIcons();
     }
 
     // ---- Carrusel reutilizable ----
@@ -357,11 +374,12 @@
       $('mNombre').textContent = c.nombre;
       $('mCap').textContent = `Hasta ${c.capacidad} personas`;
       $('mDesc').textContent = det.contiene || c.descripcion || '';
-      $('mAmen').innerHTML = (det.incluye || []).map((a) => `<span>${a}</span>`).join('');
+      $('mAmen').innerHTML = (det.incluye || []).map((a) => `<span><i data-lucide="${a.i}"></i>${a.t}</span>`).join('');
       $('mPrice').innerHTML = `${fmt(c.precio_noche)} <small>/ noche</small>`;
       $('mReservar').href = `reservar.html?cabana=${c.slug}`;
       $('modal').classList.add('open');
       document.body.style.overflow = 'hidden';
+      if (window.lucide) lucide.createIcons();
     }
     function cerrarModal() {
       modalCar.stop();

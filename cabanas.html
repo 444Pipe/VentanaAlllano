@@ -318,16 +318,42 @@
       return el;
     }
 
+    // ---- Carrusel del modal: listeners UNA sola vez, solo se actualizan las fotos ----
+    const modalCar = (() => {
+      const el = $('mCar'), track = $('mTrack');
+      const dotsWrap = el.querySelector('.car-dots');
+      let i = 0, n = 0, timer = null;
+      const go = (k) => {
+        if (!n) return;
+        i = (k + n) % n;
+        track.style.transform = `translateX(${-i * 100}%)`;
+        [...dotsWrap.children].forEach((d, x) => d.classList.toggle('active', x === i));
+      };
+      const reset = () => { clearInterval(timer); if (n > 1) timer = setInterval(() => go(i + 1), 5000); };
+      el.querySelector('.prev').addEventListener('click', (e) => { e.stopPropagation(); go(i - 1); reset(); });
+      el.querySelector('.next').addEventListener('click', (e) => { e.stopPropagation(); go(i + 1); reset(); });
+      dotsWrap.addEventListener('click', (e) => { const b = e.target.closest('button[data-k]'); if (b) { e.stopPropagation(); go(+b.dataset.k); reset(); } });
+      let sx = null;
+      el.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+      el.addEventListener('touchend', (e) => { if (sx == null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? i + 1 : i - 1); sx = null; reset(); }, { passive: true });
+      el.addEventListener('mouseenter', () => clearInterval(timer));
+      el.addEventListener('mouseleave', reset);
+      return {
+        load(fotos, nombre) {
+          track.innerHTML = fotos.map((src, k) => `<img class="car-slide" src="${src}" alt="${nombre} foto ${k + 1}" ${k ? 'loading="lazy"' : ''}>`).join('');
+          dotsWrap.innerHTML = fotos.map((_, k) => `<button type="button" data-k="${k}" aria-label="Foto ${k + 1}"></button>`).join('');
+          n = fotos.length; go(0); reset();
+        },
+        stop() { clearInterval(timer); },
+      };
+    })();
+
     // ---- Modal ----
     function abrirModal(id) {
       const c = CABANAS.find((x) => x.id === id);
       if (!c) return;
       const det = DETALLE[c.slug] || {};
-      const fotos = fotosDe(c);
-      if ($('mCar')._stop) $('mCar')._stop();
-      $('mTrack').innerHTML = fotos.map((src, i) =>
-        `<img class="car-slide" src="${src}" alt="${c.nombre} foto ${i + 1}" ${i ? 'loading="lazy"' : ''}>`).join('');
-      initCarousel($('mCar'));
+      modalCar.load(fotosDe(c), c.nombre);
       $('mNombre').textContent = c.nombre;
       $('mCap').textContent = `Hasta ${c.capacidad} personas`;
       $('mDesc').textContent = det.contiene || c.descripcion || '';
@@ -338,7 +364,7 @@
       document.body.style.overflow = 'hidden';
     }
     function cerrarModal() {
-      if ($('mCar')._stop) $('mCar')._stop();
+      modalCar.stop();
       $('modal').classList.remove('open');
       document.body.style.overflow = '';
     }

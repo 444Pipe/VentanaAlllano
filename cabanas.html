@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cabañas · Ecocabañas Ventana al Llano</title>
   <meta name="description" content="Conoce nuestras cabañas: El Chigüiro, El Mico (glamping) y El Perezoso. Fotos, detalles, precios y reservas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ecocabañas Ventana al Llano" />
+  <meta property="og:title" content="Nuestras Cabañas — Ventana al Llano" />
+  <meta property="og:description" content="El Chigüiro, El Mico (glamping) y El Perezoso. Mira fotos, lo que incluye cada una, precios y reserva la tuya." />
+  <meta property="og:image" content="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009784/ventana-al-llano/cabana-chiguiro/SaveClip_App_649228377_18009669110835757_978800948885697982_n.jpg" />
+  <meta property="og:url" content="https://ventanaalllano-production.up.railway.app/cabanas.html" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -93,6 +100,25 @@
     .btn-primary:hover { background: #a04e2c; transform: translateY(-1px); }
     .btn-ghost { background: transparent; color: var(--green-dark); border: 1.5px solid var(--line); flex: 1; }
     .btn-ghost:hover { background: #f0ead7; border-color: var(--green-mid); }
+    .btn-share { width: 42px; height: 42px; flex: 0 0 auto; border-radius: 50%; border: 1.5px solid var(--line);
+      background: #fff; color: var(--green-mid); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all .2s; }
+    .btn-share:hover { background: #f0ead7; border-color: var(--green-mid); transform: translateY(-1px); }
+    .btn-share svg { width: 18px; height: 18px; }
+
+    /* Menú compartir */
+    .share-card { background: #fff; border-radius: 18px; padding: 26px 24px; max-width: 400px; width: 100%; position: relative;
+      text-align: center; animation: modalIn .35s cubic-bezier(.2,.7,.2,1); }
+    .share-card h3 { color: var(--green-dark); font-size: 1.5rem; }
+    .share-card p { color: var(--muted); font-size: .85rem; margin: 4px 0 18px; }
+    .share-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .share-btns a, .share-btns button { display: flex; flex-direction: column; align-items: center; gap: 7px;
+      padding: 15px 6px; border-radius: 14px; border: 1px solid var(--line); background: #fcfaf5; cursor: pointer;
+      font-family: inherit; font-size: .74rem; font-weight: 600; color: var(--green-dark); text-decoration: none; transition: all .2s; }
+    .share-btns a:hover, .share-btns button:hover { background: #f0ead7; transform: translateY(-2px); }
+    .share-btns svg { width: 28px; height: 28px; }
+    .share-close { position: absolute; top: 12px; right: 14px; background: none; border: none; font-size: 1.5rem;
+      color: var(--muted); cursor: pointer; line-height: 1; }
+    .share-close:hover { color: var(--ink); }
 
     .loading, .error { text-align: center; color: var(--muted); padding: 40px; grid-column: 1/-1; }
 
@@ -175,9 +201,22 @@
         <div class="amen" id="mAmen"></div>
         <div class="modal-foot">
           <div class="price" id="mPrice"></div>
-          <a class="btn btn-primary" id="mReservar">Reservar esta cabaña</a>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn-share" id="mShare" aria-label="Compartir" title="Compartir"><i data-lucide="share-2"></i></button>
+            <a class="btn btn-primary" id="mReservar">Reservar esta cabaña</a>
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Menú compartir -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="share-card">
+      <button class="share-close" id="sClose" aria-label="Cerrar">×</button>
+      <h3>Compartir</h3>
+      <p id="sName"></p>
+      <div class="share-btns" id="sBtns"></div>
     </div>
   </div>
 
@@ -288,7 +327,10 @@
             <h3>${c.nombre}</h3>
             <p class="cab-desc">${desc}</p>
             <div class="incluye">${chips.map((a) => `<span><i data-lucide="${a.i}"></i>${a.t}</span>`).join('')}</div>
-            <div class="price-row"><span class="price">${fmt(c.precio_noche)}</span><span class="per">/ noche</span></div>
+            <div class="price-row">
+              <span class="price">${fmt(c.precio_noche)}</span><span class="per">/ noche</span>
+              <button class="btn-share" data-share="${c.id}" style="margin-left:auto;" aria-label="Compartir" title="Compartir"><i data-lucide="share-2"></i></button>
+            </div>
             <div class="cab-actions">
               <button class="btn btn-ghost" data-detalle="${c.id}">Ver detalles</button>
               <a class="btn btn-primary" href="reservar.html?cabana=${c.slug}">Reservar</a>
@@ -300,6 +342,8 @@
       document.querySelectorAll('[data-car]').forEach((el) => initCarousel(el));
       document.querySelectorAll('[data-detalle]').forEach((b) =>
         b.addEventListener('click', () => abrirModal(Number(b.dataset.detalle))));
+      document.querySelectorAll('[data-share]').forEach((b) =>
+        b.addEventListener('click', (e) => { e.stopPropagation(); compartir(CABANAS.find((c) => c.id === Number(b.dataset.share))); }));
       if (window.lucide) lucide.createIcons();
     }
 
@@ -369,6 +413,7 @@
     function abrirModal(id) {
       const c = CABANAS.find((x) => x.id === id);
       if (!c) return;
+      currentCab = c;
       const det = DETALLE[c.slug] || {};
       modalCar.load(fotosDe(c), c.nombre);
       $('mNombre').textContent = c.nombre;
@@ -388,7 +433,64 @@
     }
     $('mClose').addEventListener('click', cerrarModal);
     $('modal').addEventListener('click', (e) => { if (e.target === $('modal')) cerrarModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cerrarModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { cerrarModal(); cerrarShare(); } });
+
+    // ---- Compartir ----
+    let currentCab = null;
+    const SVG = {
+      wa: '<svg viewBox="0 0 24 24" fill="#25D366"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.08-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.78a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.49 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42"/></svg>',
+      fb: '<svg viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>',
+      x: '<svg viewBox="0 0 24 24" fill="#0f1419"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.59l5.24 6.93zM17.6 20.64h2.04L6.49 3.24H4.31z"/></svg>',
+      tg: '<svg viewBox="0 0 24 24" fill="#229ED9"><path d="M11.94 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.36 8.2-1.79 8.46c-.13.6-.49.74-.99.46l-2.74-2.02-1.32 1.27c-.15.15-.27.27-.55.27l.2-2.79 5.08-4.59c.22-.2-.05-.31-.34-.11L8.2 13.2l-2.7-.85c-.59-.18-.6-.59.12-.87l10.56-4.07c.49-.18.92.11.76.79z"/></svg>',
+      copy: '<svg viewBox="0 0 24 24" fill="none" stroke="#355e3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+    };
+    function shareData(c) {
+      const url = location.origin + '/reservar.html?cabana=' + c.slug;
+      const det = DETALLE[c.slug] || {};
+      const texto = `${c.nombre} · Ecocabañas Ventana al Llano. ${(det.contiene || c.descripcion || '').slice(0, 120)} Desde ${fmt(c.precio_noche)}/noche.`;
+      return { url, texto };
+    }
+    async function compartir(c) {
+      if (!c) return;
+      const { url, texto } = shareData(c);
+      if (navigator.share) {
+        try {
+          let files;
+          try {
+            const r = await fetch(fotosDe(c)[0]); const b = await r.blob();
+            const f = new File([b], c.slug + '.jpg', { type: b.type || 'image/jpeg' });
+            if (navigator.canShare && navigator.canShare({ files: [f] })) files = [f];
+          } catch (_) {}
+          await navigator.share(files ? { title: c.nombre, text: texto + '\n' + url, files } : { title: c.nombre, text: texto, url });
+          return;
+        } catch (e) { if (e && e.name === 'AbortError') return; }
+      }
+      abrirCompartir(c);
+    }
+    function abrirCompartir(c) {
+      const { url, texto } = shareData(c);
+      const u = encodeURIComponent(url), t = encodeURIComponent(texto);
+      $('sName').textContent = c.nombre;
+      $('sBtns').innerHTML = `
+        <a href="https://wa.me/?text=${t}%20${u}" target="_blank" rel="noopener">${SVG.wa}WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener">${SVG.fb}Facebook</a>
+        <a href="https://twitter.com/intent/tweet?text=${t}&url=${u}" target="_blank" rel="noopener">${SVG.x}X</a>
+        <a href="https://t.me/share/url?url=${u}&text=${t}" target="_blank" rel="noopener">${SVG.tg}Telegram</a>
+        <button type="button" id="copyBtn">${SVG.copy}<span id="copyTxt">Copiar enlace</span></button>`;
+      $('copyBtn').addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(url); $('copyTxt').textContent = '¡Copiado!'; }
+        catch (_) { $('copyTxt').textContent = url; }
+      });
+      $('shareModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function cerrarShare() {
+      $('shareModal').classList.remove('open');
+      if (!$('modal').classList.contains('open')) document.body.style.overflow = '';
+    }
+    $('sClose').addEventListener('click', cerrarShare);
+    $('shareModal').addEventListener('click', (e) => { if (e.target === $('shareModal')) cerrarShare(); });
+    $('mShare').addEventListener('click', () => compartir(currentCab));
 
     load();
   </script>

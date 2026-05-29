@@ -517,7 +517,11 @@
     @keyframes prePulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
     .pre-bar { width: 220px; max-width: 62vw; height: 5px; background: rgba(255,255,255,0.22); border-radius: 50px; overflow: hidden; }
     .pre-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--sand), var(--terra)); border-radius: 50px; transition: width 0.35s ease; }
-    .pre-text { color: rgba(255,255,255,0.75); font-size: 0.72rem; letter-spacing: 4px; text-transform: uppercase; }
+    .pre-words { text-align: center; }
+    .pre-tag { font-family: 'Cormorant Garamond', serif; color: #fff; font-size: 1.55rem; font-weight: 600; line-height: 1.2; }
+    .pre-tag em { font-style: italic; color: var(--sand); }
+    .pre-sub { color: rgba(255,255,255,0.72); font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; margin-top: 7px; }
+    .pre-text { color: rgba(255,255,255,0.65); font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; }
 
     /* Reveal en hijos (escalonado) */
     .stagger > * { opacity: 0; transform: translateY(34px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -584,8 +588,12 @@
   <!-- Preloader -->
   <div class="preloader" id="preloader">
     <img class="pre-logo" src="https://res.cloudinary.com/dxfgqsp8y/image/upload/f_auto,q_auto/v1780009812/ventana-al-llano/logo_png.png" alt="Ventana al Llano">
+    <div class="pre-words">
+      <div class="pre-tag">Ecocabañas · Pasadía · <em>Hospedaje</em></div>
+      <div class="pre-sub">Restrepo · Meta · Colombia</div>
+    </div>
     <div class="pre-bar"><div class="pre-bar-fill" id="preFill"></div></div>
-    <div class="pre-text">Cargando...</div>
+    <div class="pre-text">Cargando…</div>
   </div>
   <script>
     (function () {
